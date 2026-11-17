@@ -1,0 +1,80 @@
+{
+  "images": {
+    "hero": "hero.webp",
+    "makeup": "makeup.webp",
+    "skin": "skin.webp",
+    "hair": "hair.webp",
+    "scent": "scent.webp",
+    "rose": "rose.webp",
+    "product-1": "product-1.webp",
+    "product-2": "product-2.webp",
+    "product-3": "product-3.webp",
+    "product-4": "product-4.webp",
+    "product-5": "product-5.webp",
+    "product-6": "product-6.webp"
+  },
+  "products": [
+    {
+      "name": "رژ لب ساتن رز چوبی",
+      "label": "آرایش لب",
+      "price": 780000,
+      "sale": 663000,
+      "tags": [
+        "makeup",
+        "rose"
+      ],
+      "image": "product-1"
+    },
+    {
+      "name": "رژگونهٔ کرمی رز",
+      "label": "آرایش صورت",
+      "price": 950000,
+      "sale": 807500,
+      "tags": [
+        "makeup",
+        "rose"
+      ],
+      "image": "product-2"
+    },
+    {
+      "name": "سرم صورت آبرسان",
+      "label": "مراقبت پوست",
+      "price": 890000,
+      "sale": "",
+      "tags": [
+        "skin"
+      ],
+      "image": "product-3"
+    },
+    {
+      "name": "ادوپرفیوم شبِ آلو",
+      "label": "عطر و رایحه",
+      "price": 2150000,
+      "sale": "",
+      "tags": [
+        "scent"
+      ],
+      "image": "product-4"
+    },
+    {
+      "name": "روغن سبک مراقبت مو",
+      "label": "مراقبت مو",
+      "price": 720000,
+      "sale": "",
+      "tags": [
+        "hair"
+      ],
+      "image": "product-5"
+    },
+    {
+      "name": "ریمل مشکی لیفت",
+      "label": "آرایش چشم",
+      "price": 640000,
+      "sale": "",
+      "tags": [
+        "makeup"
+      ],
+      "image": "product-6"
+    }
+  ]
+}
