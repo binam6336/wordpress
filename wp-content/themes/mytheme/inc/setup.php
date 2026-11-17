@@ -19,31 +19,52 @@ add_action( 'admin_init', function () {
 add_action( 'admin_menu', function () {
 	add_theme_page( 'راه‌اندازی قالب', 'راه‌اندازی قالب', 'manage_options', 'mytheme-setup', 'mytheme_setup_screen' );
 } );
-function mytheme_setup_screen() {
-	echo '<div class="wrap"><h1>راه‌اندازی mytheme</h1><h2>۱. افزونه‌های ضروری</h2>';
-	foreach ( mytheme_dependencies() as $slug => $title ) {
-		$file = "$slug/$slug.php";
-		echo '<p>' . esc_html( $title ) . ' ';
-		if ( is_plugin_active( $file ) ) {
-			echo 'فعال است';
-		} elseif ( file_exists( WP_PLUGIN_DIR . '/' . $file ) ) {
-			$url = wp_nonce_url( admin_url( 'plugins.php?action=activate&plugin=' . rawurlencode( $file ) ), 'activate-plugin_' . $file );
-			echo '<a class="button" href="' . esc_url( $url ) . '">فعال‌سازی</a>';
-		} else {
-			$url = wp_nonce_url( admin_url( 'update.php?action=install-plugin&plugin=' . $slug ), 'install-plugin_' . $slug );
-			echo '<a class="button" href="' . esc_url( $url ) . '">نصب از مخزن وردپرس</a>';
-		}
-		echo '</p>';
-	}
-	echo '<h2>۲. انتخاب دمو</h2>';
-	if ( ! mytheme_ready() ) { echo '<p>پس از فعال‌سازی هر دو افزونه به همین صفحه برگردید.</p></div>'; return; }
-	foreach ( mytheme_demos() as $id => $demo ) {
-		$state = get_option( 'mytheme_progress_' . $id, 0 );
-		echo '<section><h3>' . esc_html( $demo['title'] ) . '</h3><p>با نصب دمو، صفحات اصلی، فروشگاه، سبد خرید و پرداخت سایت به صفحات این دمو تغییر می‌کنند.</p><button class="button button-primary" data-demo="' . esc_attr( $id ) . '">نصب یا ادامهٔ دمو</button> <progress max="100" value="' . absint( $state ) . '"></progress> <output aria-live="polite">' . absint( $state ) . '%</output></section>';
-	}
-	wp_enqueue_script( 'mytheme-setup', get_template_directory_uri() . '/inc/setup.js', array(), '0.2.0', true );
+add_action( 'admin_enqueue_scripts', function ( $hook ) {
+	if ( 'appearance_page_mytheme-setup' !== $hook ) { return; }
+	$uri = get_template_directory_uri() . '/inc/';
+	$version = wp_get_theme( get_template() )->get( 'Version' );
+	wp_enqueue_style( 'mytheme-setup', $uri . 'setup.css', array(), $version );
+	wp_enqueue_script( 'mytheme-setup', $uri . 'setup.js', array( 'updates' ), $version, true );
 	wp_localize_script( 'mytheme-setup', 'mythemeSetup', array( 'nonce' => wp_create_nonce( 'mytheme_import' ) ) );
-	echo '</div>';
+} );
+function mytheme_setup_screen() {
+	$ready = mytheme_ready();
+	?>
+	<div class="wrap mytheme-setup" dir="rtl">
+		<header><h1>راه‌اندازی قالب <bdi>mytheme</bdi></h1></header>
+		<div class="mytheme-panel"><h2>افزونه‌های ضروری</h2>
+		<?php foreach ( mytheme_dependencies() as $slug => $title ) :
+			$file = "$slug/$slug.php";
+			$active = is_plugin_active( $file );
+			$installed = file_exists( WP_PLUGIN_DIR . '/' . $file );
+			$allowed = current_user_can( 'activate_plugin', $file ) && ( $installed || current_user_can( 'install_plugins' ) );
+			?>
+			<div class="mytheme-plugin" data-state="<?php echo $active ? 'active' : ( $installed ? 'installed' : 'missing' ); ?>">
+				<strong lang="en"><?php echo esc_html( $title ); ?></strong>
+				<span role="status"><?php echo $active ? 'فعال' : ( $allowed ? ( $installed ? 'آمادهٔ فعال‌سازی' : 'نصب نشده' ) : 'نیاز به دسترسی مدیر نصب افزونه' ); ?></span>
+				<?php if ( ! $active && $allowed ) : ?>
+					<button type="button" class="button button-primary" data-plugin="<?php echo esc_attr( $slug ); ?>"><?php echo $installed ? 'فعال‌سازی' : 'نصب و فعال‌سازی'; ?></button>
+				<?php endif; ?>
+			</div>
+		<?php endforeach; ?>
+		</div>
+		<div class="mytheme-panel"><h2>انتخاب دمو</h2>
+			<p data-locked <?php echo $ready ? 'hidden' : ''; ?>>برای باز شدن دموها، هر دو افزونه را فعال کنید.</p>
+			<div data-demos <?php echo $ready ? '' : 'hidden'; ?>>
+			<?php foreach ( mytheme_demos() as $id => $demo ) :
+				$state = absint( get_option( 'mytheme_progress_' . $id, 0 ) );
+				?>
+				<section><h3><?php echo esc_html( $demo['title'] ); ?></h3>
+				<p>با نصب دمو، صفحات اصلی، فروشگاه، سبد خرید و پرداخت سایت به صفحات این دمو تغییر می‌کنند.</p>
+				<button class="button button-primary" data-demo="<?php echo esc_attr( $id ); ?>" <?php disabled( 100 === $state ); ?>>نصب یا ادامهٔ دمو</button>
+				<progress aria-label="پیشرفت نصب دمو" max="100" value="<?php echo $state; ?>"></progress>
+				<output aria-live="polite"><?php echo $state; ?>%</output></section>
+			<?php endforeach; ?>
+			</div>
+		</div>
+	</div>
+	<?php
+	wp_print_request_filesystem_credentials_modal();
 }
 add_action( 'wp_ajax_mytheme_import', function () {
 	check_ajax_referer( 'mytheme_import' );

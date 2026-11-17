@@ -1,0 +1,36 @@
+.mytheme-setup.wrap {
+	max-width: 800px;
+	margin-block: 28px;
+	color: #203a37;
+}
+.mytheme-setup header {
+	background: linear-gradient(110deg,#145a53,#153737);
+	border-radius: 16px;
+	padding: clamp(22px,4vw,40px);
+}
+.mytheme-setup header h1 { color: white; font-weight: 600; line-height: 1.6; }
+.mytheme-setup header bdi { color: #ade5cd; }
+.mytheme-panel {
+	background: white;
+	border: 1px solid #d8e3dd;
+	border-radius: 14px;
+	margin-block-start: 16px;
+	padding: clamp(16px,3vw,28px);
+}
+.mytheme-panel h2 { margin: 0 0 16px; color: #194b43; }
+.mytheme-plugin {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 12px;
+	padding-block: 14px;
+	border-block-start: 1px solid #e5ebe7;
+}
+.mytheme-plugin strong { font-size: 16px; }
+.mytheme-plugin [role=status] { color: #4a5c54; }
+.mytheme-plugin[data-state=active] [role=status] { color: #145c3c; background: #e2f4e9; border-radius: 20px; padding: 2px 12px; }
+.mytheme-plugin button { margin-inline-start: auto !important; }
+.mytheme-setup .button-primary { background: #176554; border-color: #176554; border-radius: 7px; padding-inline: 16px; }
+.mytheme-setup .button-primary:hover { background: #104d40; border-color: #104d40; }
+.mytheme-setup progress { vertical-align: middle; accent-color: #176554; max-width: 100%; margin-inline: 8px; }
+.mytheme-setup section p { line-height: 1.9; }
