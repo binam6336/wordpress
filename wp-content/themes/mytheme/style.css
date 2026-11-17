@@ -1,0 +1,28 @@
+/*
+Theme Name: mytheme
+Description: A minimal layout for WordPress.
+Version: 0.1.0
+Requires at least: 6.6
+Text Domain: mytheme
+*/
+
+body {
+	font-family: system-ui, sans-serif;
+}
+
+.wp-site-blocks > header {
+	border-block-end: 1px solid #dedbd3;
+}
+
+.wp-site-blocks > footer {
+	border-block-start: 1px solid #dedbd3;
+}
+
+main {
+	min-height: 55vh;
+}
+
+.wp-block-post-template > li + li {
+	border-block-start: 1px solid #dedbd3;
+	padding-block-start: 2rem;
+}
