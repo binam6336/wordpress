@@ -56,7 +56,7 @@ function mytheme_dependency_request( $operation ) {
 		} elseif ( 'activate' === $operation && 'active' !== $state ) {
 			$required = array( 'persian-woocommerce' => 'woocommerce/woocommerce.php', 'essential-addons-for-elementor-lite' => 'elementor/elementor.php', 'premium-addons-for-elementor' => 'elementor/elementor.php' );
 			$parent = $required[ dirname( $file ) ] ?? '';
-			$error = $parent && ! is_plugin_active( $parent ) ? new WP_Error( 'dependency', 'Dependency inactive: ' . $parent ) : activate_plugin( $file );
+			$error = $parent && 'active' !== mytheme_dependency_state( $parent ) ? new WP_Error( 'dependency', 'Dependency inactive: ' . $parent ) : activate_plugin( $file );
 		}
 		$state = mytheme_dependency_state( $file );
 		if ( ! is_wp_error( $error ) && ( 'missing' === $state || ( 'activate' === $operation && 'active' !== $state ) ) ) {

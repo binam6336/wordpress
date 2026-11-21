@@ -24,7 +24,7 @@ require_once __DIR__ . '/installer.php';
 function mytheme_ready() {
 	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	foreach ( mytheme_dependencies() as $file => $title ) {
-		if ( ! is_plugin_active( $file ) ) { return false; }
+		if ( 'active' !== mytheme_dependency_state( $file ) ) { return false; }
 	}
 	return did_action( 'elementor/loaded' ) && class_exists( 'WooCommerce' );
 }
@@ -57,12 +57,11 @@ function mytheme_setup_screen() {
 	<?php if ( ! $show_demos ) : ?>
 	<div class="mytheme-panel"><h2>۱. افزونه‌های ضروری</h2>
 	<?php foreach ( mytheme_dependencies() as $file => $title ) :
-		$active = is_plugin_active( $file );
-		$installed = file_exists( WP_PLUGIN_DIR . '/' . $file );
+		$state = mytheme_dependency_state( $file );
 		?>
-		<div class="mytheme-plugin" data-file="<?php echo esc_attr( $file ); ?>" data-state="<?php echo $active ? 'active' : ( $installed ? 'installed' : 'missing' ); ?>">
+		<div class="mytheme-plugin" data-file="<?php echo esc_attr( $file ); ?>" data-state="<?php echo esc_attr( $state ); ?>">
 			<strong><?php echo esc_html( $title ); ?></strong>
-			<span role="status"><?php echo $active ? 'فعال' : ( $installed ? 'نصب شده' : 'در انتظار نصب' ); ?></span>
+			<span role="status"><?php echo 'active' === $state ? 'فعال' : ( 'installed' === $state ? 'نصب شده' : 'در انتظار نصب' ); ?></span>
 			<div class="mytheme-failure" hidden><b aria-hidden="true">!</b><span role="alert"></span><button type="button" class="button" data-retry>تلاش مجدد</button></div>
 		</div>
 	<?php endforeach; ?>
