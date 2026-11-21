@@ -6,7 +6,7 @@ class Mytheme_Store_Widget extends \Elementor\Widget_Base {
 	protected function register_controls() {
 		$this->start_controls_section( 'store', array( 'label' => 'فروشگاه' ) );
 		$this->add_control( 'view', array( 'label' => 'نمایش', 'type' => 'select', 'default' => 'catalog', 'options' => array(
-			'catalog' => 'محصولات', 'cart' => 'سبد خرید', 'checkout' => 'پرداخت', 'search' => 'جست‌وجو', 'buy' => 'قیمت و خرید',
+			'mini-cart' => 'سبد خرید هدر', 'catalog' => 'محصولات', 'cart' => 'سبد خرید', 'checkout' => 'پرداخت', 'search' => 'جست‌وجو', 'buy' => 'قیمت و خرید',
 		) ) );
 		$this->add_control( 'product', array( 'label' => 'شناسه محصول', 'type' => 'number', 'condition' => array( 'view' => 'buy' ) ) );
 		$this->end_controls_section();
@@ -15,6 +15,7 @@ class Mytheme_Store_Widget extends \Elementor\Widget_Base {
 		if ( ! class_exists( 'WooCommerce' ) ) { return; }
 		$s = $this->get_settings_for_display();
 		switch ( $s['view'] ) {
+			case 'mini-cart': echo mytheme_cart_trigger(); break;
 			case 'search':
 				?>
 				<form class="velour-search" role="search" action="<?php echo esc_url( home_url( '/' ) ); ?>">
@@ -28,7 +29,8 @@ class Mytheme_Store_Widget extends \Elementor\Widget_Base {
 				if ( ! $product ) { break; }
 				echo '<div class="velour-buy"><span>' . wp_kses_post( $product->get_price_html() ) . '</span>';
 				$label = $product->is_type( 'simple' ) && $product->is_purchasable() && $product->is_in_stock() ? 'افزودن به سبد' : 'مشاهده محصول';
-				echo '<a class="elementor-button" href="' . esc_url( $product->add_to_cart_url() ) . '">' . esc_html( $label ) . '</a></div>';
+				$attribute = $product->is_type( 'simple' ) && $product->is_purchasable() && $product->is_in_stock() ? ' data-mytheme-add="' . absint( $product->get_id() ) . '"' : '';
+				echo '<a class="elementor-button"' . $attribute . ' href="' . esc_url( $product->add_to_cart_url() ) . '">' . esc_html( $label ) . '</a></div>';
 				break;
 			case 'cart': echo do_shortcode( '[woocommerce_cart]' ); break;
 			case 'checkout': echo do_shortcode( '[woocommerce_checkout]' ); break;

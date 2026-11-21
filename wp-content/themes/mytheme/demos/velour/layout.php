@@ -31,7 +31,7 @@ function velour_layout( $key, $title, $catalog ) {
 	}
 	$content = array(
 		velour_box( 'promo', array( velour_heading( '۱۵٪ تخفیف روی محصولات منتخب مجموعهٔ رز', 'p' ) ) ),
-		velour_box( 'mast', array( velour_link( 'VELOUR ✦', $links['home'] ), velour_widget( 'mytheme-store', array( 'view' => 'search' ) ), velour_link( 'سبد خرید', $links['cart'] ) ) ),
+		velour_box( 'mast', array( velour_link( 'VELOUR ✦', $links['home'] ), velour_widget( 'mytheme-store', array( 'view' => 'search' ) ), velour_widget( 'mytheme-store', array( 'view' => 'mini-cart' ) ) ) ),
 		velour_box( 'nav', $nav ),
 	);
 	if ( 'home' === $key ) {

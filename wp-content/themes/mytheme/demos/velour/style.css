@@ -1,6 +1,6 @@
-body:has(.velour-site) {background:#141213}
+body:has(.velour-site) {background:var(--mt-canvas)}
 .elementor .velour-site.e-con {
-	--ink:#f5eae3; --muted:#c4b2aa; --rose:#e0adac; --rule:#45373c;
+	--ink:var(--mt-ink); --muted:var(--mt-muted); --rose:var(--mt-rose); --rule:var(--mt-line);
 	direction:rtl; max-width:1280px; margin:auto; padding:0 clamp(16px,4vw,60px) 32px; gap:0;
 	color:var(--ink); font:normal 16px/1.8 Tahoma,sans-serif; text-align:start;
 }
@@ -44,11 +44,9 @@ body:has(.velour-site) {background:#141213}
 .velour-search button {font-size:.8rem;color:var(--rose);cursor:pointer}
 .velour-site .velour-services {margin-top:30px;border-block:1px solid var(--rule)}
 .velour-site .velour-services p.elementor-heading-title {font-size:.9rem;color:var(--muted)}
-.velour-site .woocommerce :is(input,select,textarea) {color:#211a1c;background:#fff}
-.velour-site .woocommerce :is(.woocommerce-checkout-payment,.woocommerce-info,.woocommerce-message) {color:#2b2226}
 @media(max-width:700px){
 	.velour-site .velour-mast.e-con {gap:5px}
-	.velour-mast .elementor-widget-mytheme-store {order:3;width:100%}
+	.velour-mast .elementor-widget-mytheme-store:has(.velour-search) {order:3;width:100%}
 	.velour-site .velour-nav.e-con {flex-wrap:nowrap;overflow:auto;justify-content:flex-start}
 	.velour-nav .elementor-button {white-space:nowrap}
 	.velour-site .velour-copy.e-con {width:100%;background:linear-gradient(to left,#190911ee,transparent);padding:24px}

@@ -25,7 +25,7 @@ if (install) {
 		}).finally(() => jQuery(document).off('credential-modal-cancel.mytheme'));
 	}
 
-	async function run(event, skip) {
+	async function run(event) {
 		install.disabled = true;
 		try {
 			for (const row of rows) {
@@ -45,15 +45,13 @@ if (install) {
 			}
 			message.textContent = 'افزونه‌های ضروری نصب و فعال هستند.';
 			next.disabled = false;
-			if (skip) next.click();
 		} catch (error) {
 			message.textContent = error?.errorMessage || error?.message || 'عملیات کامل نشد. دوباره تلاش کنید.';
 			install.disabled = false;
 		}
 	}
-	install.onclick = event => run(event, false);
+	install.onclick = event => run(event);
 	if (!next.disabled) message.textContent = 'افزونه‌های ضروری نصب و فعال هستند.';
-	else if (rows.every(row => row.dataset.state !== 'missing')) run(null, true);
 }
 
 document.querySelectorAll('[data-demo]').forEach(button => {

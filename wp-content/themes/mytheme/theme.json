@@ -6,17 +6,65 @@
 			"contentSize": "700px",
 			"wideSize": "1100px"
 		},
-		"useRootPaddingAwareAlignments": true
+		"useRootPaddingAwareAlignments": true,
+		"color": {
+			"palette": [
+				{
+					"slug": "canvas",
+					"name": "Canvas",
+					"color": "#141213"
+				},
+				{
+					"slug": "surface",
+					"name": "Surface",
+					"color": "#211d1f"
+				},
+				{
+					"slug": "raised",
+					"name": "Raised",
+					"color": "#2c2629"
+				},
+				{
+					"slug": "ink",
+					"name": "Ink",
+					"color": "#f5eae3"
+				},
+				{
+					"slug": "muted",
+					"name": "Muted",
+					"color": "#c9b9b3"
+				},
+				{
+					"slug": "line",
+					"name": "Line",
+					"color": "#56494d"
+				},
+				{
+					"slug": "rose",
+					"name": "Rose",
+					"color": "#e4b4b3"
+				}
+			]
+		}
 	},
 	"styles": {
 		"color": {
-			"background": "#faf9f6",
-			"text": "#222723"
+			"background": "var:preset|color|canvas",
+			"text": "var:preset|color|ink"
 		},
 		"elements": {
 			"link": {
 				"color": {
-					"text": "#205744"
+					"text": "var:preset|color|rose"
+				}
+			},
+			"button": {
+				"color": {
+					"background": "var:preset|color|rose",
+					"text": "var:preset|color|canvas"
+				},
+				"border": {
+					"radius": "6px"
 				}
 			}
 		},
@@ -28,7 +76,8 @@
 			}
 		},
 		"typography": {
-			"lineHeight": "1.7"
+			"lineHeight": "1.7",
+			"fontFamily": "system-ui, Tahoma, sans-serif"
 		}
 	}
 }

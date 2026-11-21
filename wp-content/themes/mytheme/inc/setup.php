@@ -15,6 +15,7 @@ function mytheme_dependencies() {
 	return array(
 		'elementor/elementor.php' => 'المنتور',
 		'woocommerce/woocommerce.php' => 'ووکامرس',
+		'persian-woocommerce/woocommerce-persian.php' => 'ووکامرس فارسی',
 		'essential-addons-for-elementor-lite/essential_adons_elementor.php' => 'Essential Addons',
 		'premium-addons-for-elementor/premium-addons-for-elementor.php' => 'Premium Addons',
 	);
@@ -131,3 +132,12 @@ add_action( 'admin_init', function () {
 		delete_transient( $transient );
 	}
 }, 0 );
+
+// Persian WooCommerce finishes its first-run installation on the next admin page.
+add_filter( 'wp_redirect', function ( $destination ) {
+	if ( is_admin() && 'mytheme-setup' === ( $_GET['page'] ?? '' ) && current_user_can( 'manage_options' )
+		&& admin_url( 'admin.php?page=persian-wc-about' ) === $destination ) {
+		return admin_url( 'themes.php?page=mytheme-setup&step=demos' );
+	}
+	return $destination;
+} );
