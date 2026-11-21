@@ -42,3 +42,20 @@
 .mytheme-demo img:first-of-type {grid-column:1/-1;height:auto}
 .mytheme-demo img:nth-of-type(2) {grid-column:span 2}
 .mytheme-setup [hidden] {display:none!important}
+.mytheme-panel:has([data-install]) {
+	color-scheme:dark; color:#f5eae3; background:#211d1f; border-color:#56494d;
+}
+.mytheme-panel:has([data-install]) h2 {color:#f5eae3}
+.mytheme-plugin {border-color:#56494d}
+.mytheme-plugin [role=status] {color:#cebfba}
+.mytheme-plugin[aria-busy=true] [role=status] {color:#ffd7a8}
+.mytheme-plugin[aria-busy=true] [role=status]::before {
+	content:"";display:inline-block;width:.8em;height:.8em;margin-inline-end:.5em;border:2px solid currentColor;border-inline-start-color:transparent;border-radius:50%;animation:mt-install-spin .9s linear infinite
+}
+@keyframes mt-install-spin {to {transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.mytheme-plugin[aria-busy=true] [role=status]::before {animation:none}}
+.mytheme-plugin[data-failure]:not([data-failure=""]) [role=status] {color:#ffadad}
+.mytheme-failure {display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex-basis:100%;padding:10px 12px;border:1px solid #955461;background:#352428;color:#ffb9bc;border-radius:8px}
+.mytheme-failure b {border:1px solid currentColor;border-radius:50%;width:20px;text-align:center}
+.mytheme-failure [role=alert] {flex:1 1 180px;overflow-wrap:anywhere}
+.mytheme-panel:has([data-install]) .button:focus-visible {outline:2px solid #ffcfbd;outline-offset:3px}

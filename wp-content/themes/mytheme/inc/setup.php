@@ -20,6 +20,7 @@ function mytheme_dependencies() {
 		'premium-addons-for-elementor/premium-addons-for-elementor.php' => 'Premium Addons',
 	);
 }
+require_once __DIR__ . '/installer.php';
 function mytheme_ready() {
 	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	foreach ( mytheme_dependencies() as $file => $title ) {
@@ -44,12 +45,12 @@ add_action( 'admin_enqueue_scripts', function ( $hook ) {
 	$version = wp_get_theme( get_template() )->get( 'Version' );
 	wp_enqueue_style( 'mytheme-setup', $uri . 'setup.css', array(), $version );
 	wp_enqueue_script( 'mytheme-setup', $uri . 'setup.js', array( 'updates' ), $version, true );
-	wp_localize_script( 'mytheme-setup', 'mythemeSetup', array( 'nonce' => wp_create_nonce( 'mytheme_import' ) ) );
+	wp_localize_script( 'mytheme-setup', 'mythemeSetup', array( 'nonce' => wp_create_nonce( 'mytheme_import' ), 'installerNonce' => wp_create_nonce( 'mytheme_installer' ), 'user' => get_current_user_id() ) );
 } );
 function mytheme_setup_screen() {
 	$ready = mytheme_ready();
 	$step = sanitize_key( wp_unslash( $_GET['step'] ?? '' ) );
-	$show_demos = $ready && 'plugins' !== $step;
+	$show_demos = $ready && 'demos' === $step;
 	$next = admin_url( 'themes.php?page=mytheme-setup&step=demos' );
 	?>
 	<div class="wrap mytheme-setup" dir="rtl"><header><h1>راه‌اندازی قالب <bdi>mytheme</bdi></h1></header>
@@ -62,10 +63,12 @@ function mytheme_setup_screen() {
 		<div class="mytheme-plugin" data-file="<?php echo esc_attr( $file ); ?>" data-state="<?php echo $active ? 'active' : ( $installed ? 'installed' : 'missing' ); ?>">
 			<strong><?php echo esc_html( $title ); ?></strong>
 			<span role="status"><?php echo $active ? 'فعال' : ( $installed ? 'نصب شده' : 'در انتظار نصب' ); ?></span>
+			<div class="mytheme-failure" hidden><b aria-hidden="true">!</b><span role="alert"></span><button type="button" class="button" data-retry>تلاش مجدد</button></div>
 		</div>
 	<?php endforeach; ?>
 	<p role="status" data-message></p>
 	<button class="button button-primary" data-install <?php disabled( $ready ); ?>>نصب و فعال‌سازی</button>
+	<button type="button" class="button" data-retry-all hidden>تلاش مجدد برای موارد ناموفق</button>
 	<button class="button" data-next="<?php echo esc_url( $next ); ?>" <?php disabled( ! $ready ); ?>>ادامه</button>
 	</div>
 	<?php else : ?>
@@ -132,12 +135,3 @@ add_action( 'admin_init', function () {
 		delete_transient( $transient );
 	}
 }, 0 );
-
-// Persian WooCommerce finishes its first-run installation on the next admin page.
-add_filter( 'wp_redirect', function ( $destination ) {
-	if ( is_admin() && 'mytheme-setup' === ( $_GET['page'] ?? '' ) && current_user_can( 'manage_options' )
-		&& admin_url( 'admin.php?page=persian-wc-about' ) === $destination ) {
-		return admin_url( 'themes.php?page=mytheme-setup&step=demos' );
-	}
-	return $destination;
-} );
