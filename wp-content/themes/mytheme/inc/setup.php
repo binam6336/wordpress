@@ -1,11 +1,29 @@
 <?php
 function mytheme_demos() {
-	return apply_filters( 'mytheme_demos', array( 'velour' => array( 'title' => 'فروشگاه زیبایی وِلور', 'frontend' => dirname( __DIR__ ) . '/demos/velour/frontend.php', 'file' => dirname( __DIR__ ) . '/demos/velour/import.php' ) ) );
+	$base = dirname( __DIR__ ) . '/demos/velour/';
+	return apply_filters( 'mytheme_demos', array(
+		'velour' => array(
+			'title'    => 'فروشگاه زیبایی وِلور',
+			'pending'  => function () { return ! get_option( 'velour_dark_widgets' ); },
+			'previews' => array( 'demos/velour/previews/home.jpg', 'demos/velour/previews/collection.jpg', 'demos/velour/previews/mobile.jpg' ),
+			'frontend' => $base . 'frontend.php',
+			'file'     => $base . 'import.php',
+		),
+	) );
 }
 function mytheme_dependencies() {
-	return array( 'elementor' => 'Elementor', 'woocommerce' => 'WooCommerce' );
+	return array(
+		'elementor/elementor.php' => 'المنتور',
+		'woocommerce/woocommerce.php' => 'ووکامرس',
+		'essential-addons-for-elementor-lite/essential_adons_elementor.php' => 'Essential Addons',
+		'premium-addons-for-elementor/premium-addons-for-elementor.php' => 'Premium Addons',
+	);
 }
 function mytheme_ready() {
+	require_once ABSPATH . 'wp-admin/includes/plugin.php';
+	foreach ( mytheme_dependencies() as $file => $title ) {
+		if ( ! is_plugin_active( $file ) ) { return false; }
+	}
 	return did_action( 'elementor/loaded' ) && class_exists( 'WooCommerce' );
 }
 add_action( 'after_switch_theme', function () { update_option( 'mytheme_welcome', 1 ); } );
@@ -29,40 +47,46 @@ add_action( 'admin_enqueue_scripts', function ( $hook ) {
 } );
 function mytheme_setup_screen() {
 	$ready = mytheme_ready();
+	$step = sanitize_key( wp_unslash( $_GET['step'] ?? '' ) );
+	$show_demos = $ready && 'plugins' !== $step;
+	$next = admin_url( 'themes.php?page=mytheme-setup&step=demos' );
 	?>
-	<div class="wrap mytheme-setup" dir="rtl">
-		<header><h1>راه‌اندازی قالب <bdi>mytheme</bdi></h1></header>
-		<div class="mytheme-panel"><h2>افزونه‌های ضروری</h2>
-		<?php foreach ( mytheme_dependencies() as $slug => $title ) :
-			$file = "$slug/$slug.php";
-			$active = is_plugin_active( $file );
-			$installed = file_exists( WP_PLUGIN_DIR . '/' . $file );
-			$allowed = current_user_can( 'activate_plugin', $file ) && ( $installed || current_user_can( 'install_plugins' ) );
-			?>
-			<div class="mytheme-plugin" data-state="<?php echo $active ? 'active' : ( $installed ? 'installed' : 'missing' ); ?>">
-				<strong lang="en"><?php echo esc_html( $title ); ?></strong>
-				<span role="status"><?php echo $active ? 'فعال' : ( $allowed ? ( $installed ? 'آمادهٔ فعال‌سازی' : 'نصب نشده' ) : 'نیاز به دسترسی مدیر نصب افزونه' ); ?></span>
-				<?php if ( ! $active && $allowed ) : ?>
-					<button type="button" class="button button-primary" data-plugin="<?php echo esc_attr( $slug ); ?>"><?php echo $installed ? 'فعال‌سازی' : 'نصب و فعال‌سازی'; ?></button>
-				<?php endif; ?>
-			</div>
-		<?php endforeach; ?>
+	<div class="wrap mytheme-setup" dir="rtl"><header><h1>راه‌اندازی قالب <bdi>mytheme</bdi></h1></header>
+	<?php if ( ! $show_demos ) : ?>
+	<div class="mytheme-panel"><h2>۱. افزونه‌های ضروری</h2>
+	<?php foreach ( mytheme_dependencies() as $file => $title ) :
+		$active = is_plugin_active( $file );
+		$installed = file_exists( WP_PLUGIN_DIR . '/' . $file );
+		?>
+		<div class="mytheme-plugin" data-file="<?php echo esc_attr( $file ); ?>" data-state="<?php echo $active ? 'active' : ( $installed ? 'installed' : 'missing' ); ?>">
+			<strong><?php echo esc_html( $title ); ?></strong>
+			<span role="status"><?php echo $active ? 'فعال' : ( $installed ? 'نصب شده' : 'در انتظار نصب' ); ?></span>
 		</div>
-		<div class="mytheme-panel"><h2>انتخاب دمو</h2>
-			<p data-locked <?php echo $ready ? 'hidden' : ''; ?>>برای باز شدن دموها، هر دو افزونه را فعال کنید.</p>
-			<div data-demos <?php echo $ready ? '' : 'hidden'; ?>>
-			<?php foreach ( mytheme_demos() as $id => $demo ) :
-				$state = absint( get_option( 'mytheme_progress_' . $id, 0 ) );
-				?>
-				<section><h3><?php echo esc_html( $demo['title'] ); ?></h3>
-				<p>با نصب دمو، صفحات اصلی، فروشگاه، سبد خرید و پرداخت سایت به صفحات این دمو تغییر می‌کنند.</p>
-				<button class="button button-primary" data-demo="<?php echo esc_attr( $id ); ?>" <?php disabled( 100 === $state ); ?>>نصب یا ادامهٔ دمو</button>
-				<progress aria-label="پیشرفت نصب دمو" max="100" value="<?php echo $state; ?>"></progress>
-				<output aria-live="polite"><?php echo $state; ?>%</output></section>
-			<?php endforeach; ?>
-			</div>
-		</div>
+	<?php endforeach; ?>
+	<p role="status" data-message></p>
+	<button class="button button-primary" data-install <?php disabled( $ready ); ?>>نصب و فعال‌سازی</button>
+	<button class="button" data-next="<?php echo esc_url( $next ); ?>" <?php disabled( ! $ready ); ?>>ادامه</button>
 	</div>
+	<?php else : ?>
+	<div class="mytheme-panel"><p>افزونه‌های ضروری نصب و فعال هستند.</p><h2>۲. انتخاب دمو</h2>
+	<p>با نصب دمو، صفحات اصلی، فروشگاه، سبد خرید و پرداخت سایت به صفحات دمو تغییر می‌کنند.</p>
+	<?php foreach ( mytheme_demos() as $id => $demo ) :
+		$state = absint( get_option( 'mytheme_progress_' . $id, 0 ) );
+		if ( isset( $demo['pending'] ) && call_user_func( $demo['pending'] ) ) { $state = min( 99, $state ); }
+		?>
+		<section class="mytheme-demo"><label>
+			<input type="radio" name="demo" value="<?php echo esc_attr( $id ); ?>">
+			<strong><?php echo esc_html( $demo['title'] ); ?></strong>
+			<?php foreach ( $demo['previews'] ?? array() as $index => $path ) : ?>
+			<img src="<?php echo esc_url( get_template_directory_uri() . '/' . $path ); ?>" alt="<?php echo esc_attr( array( 'صفحه اصلی', 'محصولات', 'نمای موبایل' )[ $index ] ?? '' ); ?>">
+			<?php endforeach; ?>
+		</label>
+		<button class="button button-primary" data-demo="<?php echo esc_attr( $id ); ?>" disabled>نصب و تکمیل</button>
+		<progress aria-label="پیشرفت نصب" max="100" value="<?php echo $state; ?>"></progress> <output aria-live="polite"><?php echo $state; ?>%</output>
+		<a class="button button-primary" data-visit href="<?php echo esc_url( home_url( '/' ) ); ?>" <?php echo 100 === $state ? '' : 'hidden'; ?>>ورود به سایت</a>
+		</section>
+	<?php endforeach; ?></div>
+	<?php endif; ?></div>
 	<?php
 	wp_print_request_filesystem_credentials_modal();
 }
@@ -99,3 +123,11 @@ add_action( 'admin_notices', function () {
 	if ( ! $screen || 'plugins' !== $screen->id || ! current_user_can( 'manage_options' ) ) { return; }
 	echo '<div class="notice notice-info"><p><a href="' . esc_url( admin_url( 'themes.php?page=mytheme-setup' ) ) . '">ادامهٔ راه‌اندازی قالب و انتخاب دمو</a></p></div>';
 } );
+
+// Keep the wizard's Continue button on the selected step after bulk activation.
+add_action( 'admin_init', function () {
+	if ( 'mytheme-setup' !== ( $_GET['page'] ?? '' ) || ! current_user_can( 'manage_options' ) ) { return; }
+	foreach ( array( 'elementor_activation_redirect', 'pa_activation_redirect', 'eael_do_activation_redirect', '_wc_activation_redirect' ) as $transient ) {
+		delete_transient( $transient );
+	}
+}, 0 );

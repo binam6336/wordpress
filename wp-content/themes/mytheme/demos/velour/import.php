@@ -71,4 +71,34 @@ $steps[] = static function () {
 	update_option( 'show_on_front', 'page' );
 	\Elementor\Plugin::$instance->files_manager->clear_cache();
 };
+// Upgrade the two original headings without rebuilding pages edited in Elementor.
+$steps[] = static function () {
+	$id = get_option( 'velour_page_home' );
+	$data = json_decode( get_post_meta( $id, '_elementor_data', true ), true );
+	if ( ! is_array( $data ) ) { throw new RuntimeException( 'داده‌های صفحه اصلی خوانده نشد.' ); }
+	$changed = false;
+	$upgrade = static function ( &$nodes ) use ( &$upgrade, &$changed ) {
+		foreach ( $nodes as &$node ) {
+			$title = $node['settings']['title'] ?? '';
+			if ( 'heading' === ( $node['widgetType'] ?? '' ) ) {
+				if ( 'رز، در نورِ شب' === $title ) {
+					$node['widgetType'] = 'eael-dual-color-header';
+					$node['settings'] += array( 'eael_dch_first_title' => 'رز، در', 'eael_dch_last_title' => 'نورِ شب', 'title_tag' => 'h1', 'eael_dch_subtext' => '', 'eael_show_dch_separator' => '', 'eael_show_dch_icon_content' => '' );
+					$changed = true;
+				} elseif ( 'منتخب وِلور' === $title ) {
+					$node['widgetType'] = 'premium-addon-title';
+					$node['settings'] += array( 'premium_title_text' => $title, 'premium_title_tag' => 'h2' );
+					$changed = true;
+				}
+			}
+			if ( ! empty( $node['elements'] ) ) { $upgrade( $node['elements'] ); }
+		}
+	};
+	$upgrade( $data );
+	if ( $changed ) {
+		update_post_meta( $id, '_elementor_data', wp_slash( wp_json_encode( $data ) ) );
+		\Elementor\Plugin::$instance->files_manager->clear_cache();
+	}
+	update_option( 'velour_dark_widgets', true );
+};
 return $steps;

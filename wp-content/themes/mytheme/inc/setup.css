@@ -34,3 +34,11 @@
 .mytheme-setup .button-primary:hover { background: #104d40; border-color: #104d40; }
 .mytheme-setup progress { vertical-align: middle; accent-color: #176554; max-width: 100%; margin-inline: 8px; }
 .mytheme-setup section p { line-height: 1.9; }
+.mytheme-demo {max-width: 620px;padding:16px;border:1px solid #cbded6;border-radius:14px;margin-block:16px}
+.mytheme-demo:has(:checked) {border-color:#176554;box-shadow:0 0 0 2px #176554}
+.mytheme-demo label {display:grid;grid-template-columns:auto 1fr 1fr;gap:10px;align-items:center;cursor:pointer;margin-bottom:16px}
+.mytheme-demo strong {grid-column:span 2;font-size:1.1rem}
+.mytheme-demo img {display:block;width:100%;height:104px;object-fit:cover;object-position:top;border-radius:8px}
+.mytheme-demo img:first-of-type {grid-column:1/-1;height:auto}
+.mytheme-demo img:nth-of-type(2) {grid-column:span 2}
+.mytheme-setup [hidden] {display:none!important}

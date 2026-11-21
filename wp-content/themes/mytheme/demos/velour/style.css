@@ -1,30 +1,67 @@
-.elementor .velour-site {
-	direction: rtl; max-width: 1240px; margin-inline: auto; padding: clamp(12px, 3vw, 40px); gap: 25px;
-	color: #392b34; background: #fffaf7; font-family: Tahoma, sans-serif;
+body:has(.velour-site) {background:#141213}
+.elementor .velour-site.e-con {
+	--ink:#f5eae3; --muted:#c4b2aa; --rose:#e0adac; --rule:#45373c;
+	direction:rtl; max-width:1280px; margin:auto; padding:0 clamp(16px,4vw,60px) 32px; gap:0;
+	color:var(--ink); font:normal 16px/1.8 Tahoma,sans-serif; text-align:start;
 }
-.velour-site .elementor-heading-title {color: inherit; font-family: inherit; line-height: 1.55;}
-.velour-site .elementor-button {background: #622a42; color: white; border-radius: 24px; padding: 10px 18px;}
-.velour-site .elementor-button:hover {background: #843d57;}
-.velour-site :is(.velour-mast,.velour-nav,.velour-footer,.velour-services,.velour-section-title) {
-	flex-direction: row; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+.velour-site .elementor-widget-heading .elementor-heading-title,.velour-site .elementor-widget-text-editor {color:inherit;font-family:inherit;line-height:1.6}
+.velour-site a {color:inherit}
+.velour-site .elementor-button {display:inline-flex;align-items:center;background:#f2ded5;color:#302027;border-radius:3px;padding:11px 18px;font:inherit;text-decoration:none}
+.velour-site .elementor-button:hover {background:#fff3eb;color:#301d25}
+.velour-site :is(.velour-mast,.velour-nav,.velour-footer,.velour-services,.velour-section-title).e-con {
+	flex-flow:row wrap;align-items:center;justify-content:space-between;gap:12px;padding:15px 0;
 }
-.velour-site .velour-nav {justify-content: center; border-block: 1px solid #dbc8cc;}
-.velour-site :is(.velour-nav,.velour-category,.velour-footer) .elementor-button {background: transparent; color: #622a42;}
-.velour-site .velour-promo {text-align: center; background: #432437; color: white; padding: 8px;}
-.velour-site .velour-promo p,.velour-site .velour-services p {font-size: .95rem;}
-.velour-site .velour-hero {position: relative; isolation: isolate; background: #36212c; color: white; overflow: hidden; border-radius: 22px; justify-content: center; min-height: clamp(360px,48vw,560px);}
-.velour-hero > .elementor-widget-image {position: absolute; inset: 0; z-index: -1;}
-.velour-hero > .elementor-widget-image :is(div,img) {width: 100%; height: 100%; object-fit: cover;}
-.velour-site .velour-copy {background: linear-gradient(to left,#26151fea,transparent); padding: clamp(24px,6vw,80px); max-width: 70%;}
-.velour-copy h1 {font-size: clamp(2.4rem,5vw,5rem);}
-.velour-site :is(.velour-grid,.velour-categories) {display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px;}
-.velour-site .velour-categories {grid-template-columns: repeat(5,minmax(0,1fr));}
-.velour-site :is(.velour-category,.velour-card) {background: white; padding: 12px; border: 1px solid #eadbde; border-radius: 16px; gap: 10px;}
-.velour-card img,.velour-category img {width: 100%; border-radius: 10px;}
-.velour-card h3 {font-size: 1.2rem;}
-.velour-site .velour-services {background: #f1e2e4; padding: 20px;}
-.velour-site .velour-footer {border-top: 1px solid #dbc8cc;}
-@media(max-width:700px) {
-	.velour-site :is(.velour-grid,.velour-categories) {grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px;}
-	.velour-site .velour-copy {max-width: 100%;}
+.velour-site :is(.velour-mast,.velour-nav,.velour-footer,.velour-category,.velour-section-title) .elementor-button {background:transparent;color:var(--ink);font-size:.88rem;padding:6px 8px}
+.velour-site .velour-mast .elementor-widget-button:first-child .elementor-button,.velour-site .velour-footer .elementor-widget-button:first-child .elementor-button {font:30px Georgia,serif;letter-spacing:.18em;color:#eed5bd}
+.velour-site .velour-nav.e-con {justify-content:center;border-block:1px solid var(--rule);margin-bottom:22px;padding-block:7px}
+.velour-site .velour-promo {text-align:center;padding:6px;background:#33252b;color:#eed7cf}
+.velour-site .velour-promo p.elementor-heading-title {font-size:.78rem}
+.velour-site .velour-hero.e-con {position:relative;isolation:isolate;overflow:hidden;border-radius:5px;background:#1d0911;justify-content:center;min-height:clamp(360px,39vw,520px);padding:0}
+.velour-site .velour-hero > .elementor-widget-image {position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.velour-hero > .elementor-widget-image :is(div,img) {width:100%;height:100%;object-fit:cover;object-position:50% 55%}
+.velour-site .velour-copy.e-con {z-index:1;width:min(56%,580px);gap:18px;padding:clamp(24px,5vw,76px);color:#f6e8e3}
+.velour-copy .eael-dual-header {text-align:start}
+.velour-site .velour-copy :is(h1,.eael-dch-title,.eael-dch-title-text) {font:500 clamp(2.4rem,5vw,4.8rem)/1.35 Georgia,Tahoma,serif;color:#ffe9de;margin:0}
+.velour-copy .eael-dch-title-text:last-child {color:#e9aab8}
+.velour-site .velour-copy p.elementor-heading-title {font-size:.85rem;color:var(--rose)}
+.velour-site :is(.velour-grid,.velour-categories).e-con {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,2vw,24px);padding:0}
+.velour-site .velour-categories.e-con {grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;padding:24px 0;border-bottom:1px solid var(--rule)}
+.velour-site .velour-category.e-con {align-items:center;justify-content:center;flex-flow:row wrap;padding:6px;gap:6px}
+.velour-category img {width:54px;height:54px;border-radius:50%}
+.velour-site .velour-section-title.e-con {padding:32px 0 20px}
+.velour-site .premium-title-text,.velour-site h2.premium-title-header {font:500 clamp(1.5rem,3vw,2.4rem)/1.5 Georgia,Tahoma,serif;color:var(--ink)}
+.velour-site .velour-card.e-con {position:relative;background:#211d1e;border:1px solid #3b3134;border-radius:5px;overflow:hidden;padding:0 0 16px;gap:8px}
+.velour-card img {width:100%;aspect-ratio:1;object-fit:cover;display:block}
+.velour-card > :not(.elementor-widget-image) {padding-inline:14px}
+.velour-site .velour-card h3.elementor-heading-title {font-size:1.15rem}
+.velour-site .velour-card span.elementor-heading-title {font-size:.78rem;color:var(--rose)}
+.velour-buy,.velour-search {display:flex;align-items:center;flex-wrap:wrap;gap:10px;justify-content:space-between}
+.velour-buy {font-size:.84rem}
+.velour-site .velour-buy .elementor-button {padding:5px 10px}
+.velour-search {background:#201c1d;border:1px solid var(--rule);border-radius:5px;gap:0;overflow:hidden}
+.velour-search input[type=search],.velour-search button {border:0;background:transparent;color:var(--ink);font:inherit;padding:7px 12px;max-width:100%}
+.velour-search input::placeholder {color:var(--muted)}
+.velour-search button {font-size:.8rem;color:var(--rose);cursor:pointer}
+.velour-site .velour-services {margin-top:30px;border-block:1px solid var(--rule)}
+.velour-site .velour-services p.elementor-heading-title {font-size:.9rem;color:var(--muted)}
+.velour-site .woocommerce :is(input,select,textarea) {color:#211a1c;background:#fff}
+.velour-site .woocommerce :is(.woocommerce-checkout-payment,.woocommerce-info,.woocommerce-message) {color:#2b2226}
+@media(max-width:700px){
+	.velour-site .velour-mast.e-con {gap:5px}
+	.velour-mast .elementor-widget-mytheme-store {order:3;width:100%}
+	.velour-site .velour-nav.e-con {flex-wrap:nowrap;overflow:auto;justify-content:flex-start}
+	.velour-nav .elementor-button {white-space:nowrap}
+	.velour-site .velour-copy.e-con {width:100%;background:linear-gradient(to left,#190911ee,transparent);padding:24px}
+	.velour-site .velour-grid.e-con {grid-template-columns:repeat(2,minmax(0,1fr))}
+	.velour-site .velour-category.e-con {flex-direction:column;padding:0}
+	.velour-site .velour-category .elementor-button {font-size:.73rem;padding:2px}
+	.velour-category img {max-width:100%;height:auto}
+	.velour-buy {align-items:flex-start;flex-direction:column}
+}
+.elementor .velour-site .velour-copy .elementor-widget-button .elementor-button {background-color:#f1dbcf;color:#301e23}
+.elementor .velour-site .velour-copy .elementor-widget-eael-dual-color-header .eael-dual-header .eael-dch-title .eael-dch-title-text {color:#f4d8cf;font:inherit;margin:0}
+.elementor .velour-site .velour-copy .elementor-widget-eael-dual-color-header .eael-dual-header .eael-dch-title .eael-dch-title-lead {color:#d49b9f}
+.velour-site .velour-card .elementor-widget-mytheme-store {margin-block-start:auto}
+@media(max-width:700px){
+	.velour-site .velour-nav.e-con > .elementor-widget {flex:0 0 auto}
 }
