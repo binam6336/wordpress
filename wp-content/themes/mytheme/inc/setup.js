@@ -130,10 +130,11 @@ document.querySelectorAll('[data-demo]').forEach(button => {
 	const bar = panel.querySelector('progress');
 	const status = panel.querySelector('output');
 	setup.addEventListener('change', () => {
-		button.disabled = !panel.querySelector('input').checked || bar.value === 100;
+		button.disabled = !panel.querySelector('input').checked || panel.dataset.active === 'true';
 	});
 	button.onclick = async () => {
 		button.disabled = true;
+		panel.setAttribute('aria-busy', 'true');
 		try {
 			while (bar.value < 100) {
 				const body = new URLSearchParams({action: 'mytheme_import', demo: button.dataset.demo, _ajax_nonce: mythemeSetup.nonce});
@@ -143,11 +144,27 @@ document.querySelectorAll('[data-demo]').forEach(button => {
 				bar.value = result.data;
 				status.textContent = bar.value + '%';
 			}
+			status.textContent = 'در حال فعال‌سازی…';
+			const body = new URLSearchParams({action: 'mytheme_activate_demo', demo: button.dataset.demo, _ajax_nonce: mythemeSetup.nonce});
+			const response = await fetch(ajaxurl, {method: 'POST', body});
+			const result = await response.json();
+			if (!result.success) throw new Error(result.data || 'فعال‌سازی دمو ناموفق بود');
+			setup.querySelectorAll('.mytheme-demo').forEach(other => {
+				other.dataset.active = String(other === panel);
+				other.querySelector('[data-visit]').hidden = other !== panel;
+				other.querySelector('strong em')?.remove();
+				other.querySelector('[data-demo]').textContent = other.querySelector('progress').value === 100 ? 'فعال‌سازی دمو' : 'نصب و تکمیل';
+			});
+			const badge = document.createElement('em');
+			badge.textContent = 'دموی فعال';
+			panel.querySelector('strong').append(badge);
 			panel.querySelector('[data-visit]').hidden = false;
 			status.textContent = '۱۰۰٪ — دمو آماده است';
 		} catch (error) {
 			status.textContent = error.message;
-			button.disabled = false;
+		} finally {
+			panel.removeAttribute('aria-busy');
+			setup.dispatchEvent(new Event('change'));
 		}
 	};
 });

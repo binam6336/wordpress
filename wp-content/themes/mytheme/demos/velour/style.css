@@ -1,4 +1,11 @@
 body:has(.velour-site) {background:var(--mt-canvas)}
+body.mytheme-demo-velour :is(.mytheme-demo-header,.mytheme-demo-footer) {background:#211d1e;border-block:1px solid #56494d;color:#f5eae3}
+body.mytheme-demo-velour .mytheme-demo-inner {max-width:1280px;margin:auto;padding:18px clamp(16px,4vw,60px);display:flex;align-items:center;gap:24px}
+body.mytheme-demo-velour .mytheme-demo-brand {color:#eed5bd;font:26px Georgia,serif;letter-spacing:.14em;text-decoration:none;white-space:nowrap}
+body.mytheme-demo-velour .mytheme-demo-inner nav {display:flex;align-items:center;flex-wrap:wrap;gap:20px;margin-inline:auto}
+body.mytheme-demo-velour .mytheme-demo-inner nav a {color:#f5eae3;font-size:13px;text-decoration:none}
+body.mytheme-demo-velour .mytheme-demo-inner nav a:hover {color:#e4b4b3}
+@media(max-width:650px){body.mytheme-demo-velour .mytheme-demo-inner{flex-wrap:wrap;gap:12px}body.mytheme-demo-velour .mytheme-demo-inner nav{order:3;flex-basis:100%;flex-wrap:nowrap;overflow:auto;gap:14px}body.mytheme-demo-velour .mytheme-demo-inner nav a{white-space:nowrap}}
 .elementor .velour-site.e-con {
 	--ink:var(--mt-ink); --muted:var(--mt-muted); --rose:var(--mt-rose); --rule:var(--mt-line);
 	direction:rtl; max-width:1280px; margin:auto; padding:0 clamp(16px,4vw,60px) 32px; gap:0;

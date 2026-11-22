@@ -1,0 +1,20 @@
+{
+  "images": {
+    "wall": "wd-wallclock-category.jpg",
+    "table": "wd-table-category.jpg",
+    "gramophone": "wd-gramophone-category.jpg",
+    "product-1": "woodsun-philadelphia-wall-clock-2c2fcd85-600.webp",
+    "product-2": "lotus-8838-clock-600X600-min.webp",
+    "product-3": "woodsun-kf-black-60-wall-clock-97649ccf-600.webp",
+    "product-4": "lotus-m-4031-gold-min.webp",
+    "product-5": "dramaphone-gd01-li-br-table-gramophone-72dfb534-600.webp"
+  },
+  "products": [
+    {"name":"ساعت دیواری چوبی کلاسیک","price":14800000,"category":"wall","image":"product-1"},
+    {"name":"ساعت دیواری طرح جهان","price":10160000,"category":"wall","image":"product-2"},
+    {"name":"ساعت دیواری مشکی","price":12300000,"category":"wall","image":"product-3"},
+    {"name":"ساعت دیواری طلایی","price":11600000,"category":"wall","image":"product-4"},
+    {"name":"گرامافون رومیزی","price":6890000,"category":"gramophone","image":"product-5"},
+    {"name":"میز کنسول چوبی","price":8900000,"category":"table","image":"table"}
+  ]
+}

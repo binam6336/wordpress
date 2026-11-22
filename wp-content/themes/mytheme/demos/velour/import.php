@@ -18,7 +18,8 @@ foreach ( $catalog['images'] as $key => $filename ) {
 foreach ( $catalog['products'] as $item ) {
 	$steps[] = static function () use ( $item ) {
 		$sku = 'mytheme-velour-' . $item['image'];
-		if ( wc_get_product_id_by_sku( $sku ) ) { return; }
+		$existing = wc_get_product_id_by_sku( $sku );
+		if ( $existing ) { update_post_meta( $existing, '_mytheme_demo', 'velour' ); return; }
 		$product = new WC_Product_Simple();
 		$product->set_name( $item['name'] );
 		$product->set_sku( $sku );
@@ -35,7 +36,9 @@ foreach ( $catalog['products'] as $item ) {
 			$terms[] = $new['term_id'];
 		}
 		$product->set_category_ids( $terms );
-		$product->save();
+		$id = $product->save();
+		if ( ! $id ) { throw new RuntimeException( 'محصول ذخیره نشد.' ); }
+		update_post_meta( $id, '_mytheme_demo', 'velour' );
 	};
 }
 $pages = array( 'home' => 'صفحه اصلی', 'shop' => 'فروشگاه', 'contact' => 'تماس با ما', 'cart' => 'سبد خرید', 'checkout' => 'پرداخت' );
@@ -66,9 +69,6 @@ foreach ( $pages as $key => $title ) {
 	};
 }
 $steps[] = static function () {
-	foreach ( array( 'shop', 'cart', 'checkout' ) as $key ) { update_option( 'woocommerce_' . $key . '_page_id', get_option( 'velour_page_' . $key ) ); }
-	update_option( 'page_on_front', get_option( 'velour_page_home' ) );
-	update_option( 'show_on_front', 'page' );
 	\Elementor\Plugin::$instance->files_manager->clear_cache();
 };
 // Upgrade the two original headings without rebuilding pages edited in Elementor.
