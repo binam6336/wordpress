@@ -1,7 +1,7 @@
 /*
 Theme Name: mytheme
 Description: A minimal layout for WordPress.
-Version: 0.5.0
+Version: 0.6.0
 Requires at least: 6.6
 Text Domain: mytheme
 */
@@ -84,3 +84,69 @@ body .wp-site-blocks :is(.wp-block-search__button,.wp-block-file__button,.form-s
 }
 body :is(.wp-site-blocks,.velour-site) :is(a,button,input,select,textarea) {scroll-margin-block:20px}
 .mt-cart-trigger:focus-visible {outline:2px solid var(--mt-rose);outline-offset:3px}
+.mt-count[hidden] {display:none}
+
+/* Shared storefront controls. Each demo supplies its own palette. */
+.mytheme-demo-promo {padding:8px 18px;text-align:center;background:var(--mt-raised);color:var(--mt-ink);font-size:.78rem}
+.mytheme-demo-header,.mytheme-demo-footer {border-block:1px solid var(--mt-line)}
+.mytheme-demo-header .mytheme-demo-inner,.mytheme-demo-footer .mytheme-demo-inner {display:flex;align-items:center;gap:clamp(12px,2vw,28px)}
+.mytheme-demo-nav {display:flex;align-items:center;gap:clamp(10px,1.6vw,22px);max-width:1280px;margin:auto;padding:0 clamp(16px,4vw,60px) 12px;overflow-x:auto;scrollbar-width:thin}
+.mytheme-demo-nav a {flex:none;color:var(--mt-ink);font-size:.82rem;text-decoration:none;white-space:nowrap}
+.mytheme-demo-nav a:hover {color:var(--mt-rose)}
+.mytheme-demo-footer .mytheme-demo-nav {padding:0;margin-inline:auto}
+.mytheme-demo-search {display:flex;align-items:stretch;flex:1;min-width:140px;max-width:600px;border:1px solid var(--mt-line);border-radius:10px;overflow:hidden;background:var(--mt-surface)}
+.mytheme-demo-search:focus-within {border-color:var(--mt-rose);box-shadow:0 0 0 2px color-mix(in srgb,var(--mt-rose) 24%,transparent)}
+.mytheme-demo-search input[type=search] {flex:1;width:100%;min-width:0;padding:9px 14px;background:transparent;color:var(--mt-ink);border:0;font:inherit}
+.mytheme-demo-search input[type=search]:focus {outline:0}
+.mytheme-demo-search button {padding:8px 16px;border:0;border-inline-start:1px solid var(--mt-line);background:var(--mt-raised);color:var(--mt-ink);font:inherit;cursor:pointer}
+.mytheme-demo-search button:hover {color:var(--mt-rose)}
+.mytheme-demo-header .mt-cart-trigger {flex:none}
+body.mytheme-canvas-shell :is(.decor-notice,.decor-utility,.decor-mast,.decor-nav,.decor-footer,.velour-promo,.velour-mast,.velour-nav,.velour-footer).e-con {display:none}
+body.mytheme-canvas-shell .mytheme-demo-header .mytheme-demo-search {max-width:560px}
+body .woocommerce div.product {max-width:1240px;margin-inline:auto}
+body .woocommerce div.product .woocommerce-product-gallery img {border-radius:10px;background:var(--mt-surface)}
+body .woocommerce div.product .summary {display:grid;align-content:start;gap:12px}
+body .woocommerce div.product .summary > * {margin-block:0}
+body .woocommerce div.product .summary .price {font-size:clamp(1.3rem,2vw,1.8rem);font-weight:700}
+body .woocommerce div.product .summary .stock {color:var(--mt-muted)}
+body .woocommerce div.product form.cart {display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+body .woocommerce div.product form.cart .variations {width:100%}
+body .woocommerce div.product form.cart .variations tr {display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-block:8px}
+body .woocommerce div.product .woocommerce-tabs {padding-block:28px;border-block-start:1px solid var(--mt-line)}
+body .woocommerce table.shop_attributes :is(th,td) {background:var(--mt-surface);color:var(--mt-ink);border-color:var(--mt-line)}
+body .woocommerce .woocommerce-breadcrumb {color:var(--mt-muted);padding-block:15px}
+body .woocommerce .woocommerce-breadcrumb a {color:var(--mt-ink)}
+body .woocommerce :is(.woocommerce-checkout,.woocommerce-cart-form) label {font-weight:600}
+body .woocommerce .form-row :is(input.input-text,textarea,select) {min-height:44px;text-align:start;direction:rtl}
+body .woocommerce .form-row.woocommerce-invalid input.input-text {border-color:#cc6d70}
+@media(max-width:650px){.mytheme-demo-header .mytheme-demo-inner{flex-wrap:wrap}.mytheme-demo-header .mytheme-demo-search{order:3;flex-basis:100%;max-width:none}.mytheme-demo-footer .mytheme-demo-inner{flex-wrap:wrap}.mytheme-demo-footer .mytheme-demo-nav{flex-basis:100%}.mytheme-demo-nav{padding-inline:18px}}
+body.mytheme-header-compact :is(.mytheme-demo-promo,.velour-promo,.decor-notice) {display:none}
+body.mytheme-header-compact .mytheme-demo-header .mytheme-demo-inner {padding-block:10px}
+body.mytheme-header-compact :is(.velour-mast,.decor-mast).e-con {padding-block:10px}
+body.mytheme-footer-simple :is(.mytheme-demo-footer .mytheme-demo-nav a:nth-child(n+3),.velour-footer > .elementor-widget:nth-child(n+3),.decor-footer > .elementor-widget:nth-child(n+3)) {display:none}
+.mytheme-catalog-filters {display:grid;grid-template-columns:repeat(5,minmax(125px,1fr));gap:12px;align-items:end;margin:0 0 22px;padding:18px;border:1px solid var(--mt-line);border-radius:12px;background:var(--mt-surface)}
+.mytheme-catalog-filters label {display:grid;gap:5px;color:var(--mt-ink);font-size:.8rem}
+.mytheme-catalog-filters :is(input,select) {width:100%;min-height:42px;padding:7px 10px;border:1px solid var(--mt-line);border-radius:7px;background:var(--mt-raised);color:var(--mt-ink);font:inherit}
+.mytheme-catalog-filters button {min-height:42px;border:1px solid var(--mt-rose);border-radius:7px;background:var(--mt-rose);color:var(--mt-canvas);font:600 .85rem Tahoma,sans-serif;cursor:pointer}
+.mytheme-catalog-filters a {align-self:center;text-decoration:underline;color:var(--mt-muted);font-size:.82rem}
+@media(max-width:900px){.mytheme-catalog-filters{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:600px){.mytheme-catalog-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.mytheme-catalog-filters label:first-of-type{grid-column:1/-1}}
+body[class*="mytheme-demo-"]:has(.mytheme-catalog-filters) :is(.woocommerce-result-count,.woocommerce-ordering) {display:none}
+body[class*="mytheme-demo-"] .woocommerce ul.products {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(14px,2vw,26px);clear:both}
+body[class*="mytheme-demo-"] .woocommerce ul.products::before,body[class*="mytheme-demo-"] .woocommerce ul.products::after {display:none}
+body[class*="mytheme-demo-"] .woocommerce ul.products li.product {float:none;width:auto;margin:0;display:flex;flex-direction:column;min-width:0;padding:12px;border:1px solid var(--mt-line);border-radius:12px;background:var(--mt-surface)}
+body[class*="mytheme-demo-"] .woocommerce ul.products li.product :is(a.woocommerce-LoopProduct-link,a.woocommerce-loop-product__link) {display:block;color:var(--mt-ink);text-decoration:none}
+body[class*="mytheme-demo-"] .woocommerce ul.products li.product img {display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:8px;background:var(--mt-raised);margin:0 0 12px}
+body[class*="mytheme-demo-"] .woocommerce ul.products li.product .woocommerce-loop-product__title {font-size:1rem;line-height:1.6;min-height:3.2em}
+body[class*="mytheme-demo-"] .woocommerce ul.products li.product .price {font-weight:700;margin-block:8px 14px}
+body[class*="mytheme-demo-"] .woocommerce ul.products li.product .button {align-self:start;margin-top:auto}
+@media(max-width:900px){body[class*="mytheme-demo-"] .woocommerce ul.products{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:520px){body[class*="mytheme-demo-"] .woocommerce ul.products{grid-template-columns:1fr}}
+.mytheme-preview-detail {max-width:1200px;margin:auto;padding:clamp(24px,5vw,70px);min-height:60vh;color:var(--mt-ink)}
+.mytheme-preview-note {padding:12px 18px;border:1px solid var(--mt-line);border-radius:8px;background:var(--mt-surface);font-size:.85rem}
+.mytheme-preview-detail-grid {display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:clamp(24px,5vw,80px);padding-block:32px}
+.mytheme-preview-detail-image img {display:block;width:100%;max-height:560px;object-fit:contain;border-radius:12px;background:var(--mt-surface)}
+.mytheme-preview-detail h1 {font-size:clamp(2rem,3vw,3.5rem)}
+.mytheme-preview-kicker {color:var(--mt-rose);letter-spacing:.05em}
+.mytheme-preview-price {font-size:1.5rem;font-weight:700}
+@media(max-width:700px){.mytheme-preview-detail-grid{grid-template-columns:1fr}}

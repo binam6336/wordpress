@@ -5,7 +5,7 @@ function mytheme_cart_trigger() {
 	?>
 	<a class="mt-cart-trigger" href="<?php echo esc_url( wc_get_cart_url() ); ?>" aria-label="سبد خرید" aria-haspopup="dialog">
 		<span class="dashicons dashicons-cart" aria-hidden="true"></span>
-		<span class="mt-count" aria-hidden="true">۰</span>
+		<span class="mt-count" aria-hidden="true" hidden></span>
 	</a>
 	<?php
 	return ob_get_clean();

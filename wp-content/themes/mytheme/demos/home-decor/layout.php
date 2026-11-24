@@ -58,7 +58,8 @@ function home_decor_layout( $key, $title, $catalog ) {
 	if ( 'home' === $key ) {
 		$stories = array();
 		foreach ( array( 'wall', 'table', 'gramophone', 'wall', 'table' ) as $index => $slug ) {
-			$stories[] = home_decor_box( 'story', array( home_decor_image( $slug, $category_links[ $slug ] ), home_decor_link( array( 'ساعت‌ها', 'چوب و خانه', 'صدای خاطره', 'منتخب‌ها', 'تازه‌ها' )[ $index ], $category_links[ $slug ] ) ) );
+			$story_url = 4 === $index ? add_query_arg( 'mt_sort', 'date', $links['shop'] ) : $category_links[ $slug ];
+			$stories[] = home_decor_box( 'story', array( home_decor_image( $slug, $story_url ), home_decor_link( array( 'ساعت‌ها', 'چوب و خانه', 'صدای خاطره', 'منتخب‌ها', 'تازه‌ها' )[ $index ], $story_url ) ) );
 		}
 		$content[] = home_decor_box( 'stories', $stories );
 		$content[] = home_decor_box( 'section-heading', array( home_decor_heading( 'مجموعه‌های خانه', 'h1' ), home_decor_heading( 'از ساعت‌های کلاسیک تا جزئیات دلنشین دکوراسیون', 'p' ) ) );

@@ -1,20 +1,12 @@
 <?php
 require_once __DIR__ . '/layout.php';
+require_once dirname( __DIR__, 2 ) . '/inc/demo-import.php';
 $catalog = json_decode( file_get_contents( __DIR__ . '/catalog.json' ), true );
 $steps = array();
 
 foreach ( $catalog['images'] as $key => $filename ) {
 	$steps[] = static function () use ( $key, $filename ) {
-		$id = (int) get_option( 'home_decor_image_' . $key );
-		if ( $id && get_post( $id ) ) { return; }
-		require_once ABSPATH . 'wp-admin/includes/image.php';
-		require_once ABSPATH . 'wp-admin/includes/file.php';
-		require_once ABSPATH . 'wp-admin/includes/media.php';
-		$tmp = wp_tempnam( $filename );
-		if ( ! $tmp || ! copy( __DIR__ . '/images/' . $filename, $tmp ) ) { throw new RuntimeException( 'کپی تصویر ناموفق بود.' ); }
-		$id = media_handle_sideload( array( 'name' => $filename, 'tmp_name' => $tmp ), 0 );
-		if ( is_wp_error( $id ) ) { wp_delete_file( $tmp ); throw new RuntimeException( $id->get_error_message() ); }
-		update_option( 'home_decor_image_' . $key, $id );
+		mytheme_import_demo_image( 'home-decor', $key, $filename, __DIR__ . '/images/' . $filename );
 	};
 }
 foreach ( $catalog['products'] as $item ) {
@@ -43,11 +35,7 @@ foreach ( $catalog['products'] as $item ) {
 $pages = array( 'home' => 'صفحه اصلی', 'shop' => 'فروشگاه', 'contact' => 'تماس با ما', 'cart' => 'سبد خرید', 'checkout' => 'پرداخت' );
 foreach ( $pages as $key => $title ) {
 	$steps[] = static function () use ( $key, $title ) {
-		$id = (int) get_option( 'home_decor_page_' . $key );
-		if ( $id && get_post( $id ) ) { return; }
-		$id = wp_insert_post( array( 'post_type' => 'page', 'post_status' => 'draft', 'post_title' => $title, 'post_name' => 'home-decor-' . $key ), true );
-		if ( is_wp_error( $id ) ) { throw new RuntimeException( $id->get_error_message() ); }
-		update_option( 'home_decor_page_' . $key, $id );
+		mytheme_import_demo_page( 'home-decor', $key, $title );
 	};
 }
 foreach ( $pages as $key => $title ) {

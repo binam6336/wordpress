@@ -1,4 +1,5 @@
 body:has(.velour-site) {background:var(--mt-canvas)}
+body.mytheme-demo-velour .mytheme-demo-promo {background:#33252b;color:#eed7cf}
 body.mytheme-demo-velour :is(.mytheme-demo-header,.mytheme-demo-footer) {background:#211d1e;border-block:1px solid #56494d;color:#f5eae3}
 body.mytheme-demo-velour .mytheme-demo-inner {max-width:1280px;margin:auto;padding:18px clamp(16px,4vw,60px);display:flex;align-items:center;gap:24px}
 body.mytheme-demo-velour .mytheme-demo-brand {color:#eed5bd;font:26px Georgia,serif;letter-spacing:.14em;text-decoration:none;white-space:nowrap}
@@ -70,3 +71,42 @@ body.mytheme-demo-velour .mytheme-demo-inner nav a:hover {color:#e4b4b3}
 @media(max-width:700px){
 	.velour-site .velour-nav.e-con > .elementor-widget {flex:0 0 auto}
 }
+
+/* Edition two: an editorial split cover and quieter product gallery. */
+body.mytheme-demo-velour {--mt-canvas:#140f16;--mt-surface:#211923;--mt-raised:#2c202c;--mt-ink:#fbf3f0;--mt-muted:#cbbbc4;--mt-line:#493947;background:radial-gradient(circle at 100% 0,#392230 0,transparent 32%),#140f16}
+body.mytheme-demo-velour .mytheme-demo-promo {background:#6a394a;color:#fff4ee;letter-spacing:.05em}
+body.mytheme-demo-velour :is(.mytheme-demo-header,.mytheme-demo-footer) {background:#1e1720;border-color:#493947}
+body.mytheme-demo-velour .mytheme-demo-brand {font-size:clamp(22px,2.2vw,29px);letter-spacing:.22em}
+body.mytheme-demo-velour .mytheme-demo-search {border-radius:999px;background:#291e29}
+body.mytheme-demo-velour .mytheme-demo-search button {padding-inline:23px;border-radius:999px 0 0 999px}
+.elementor .velour-site.e-con {max-width:1360px;padding-inline:clamp(18px,4vw,72px)}
+.velour-site .velour-hero.e-con {min-height:clamp(460px,43vw,620px);display:flex;flex-flow:row nowrap;align-items:stretch;gap:0;border:1px solid #614453;border-radius:22px;background:linear-gradient(145deg,#402332,#211622 70%);box-shadow:0 30px 90px #09050966}
+.velour-site .velour-hero > .elementor-widget-image {position:relative;inset:auto;order:2;flex:0 0 52%;height:auto;overflow:hidden;border-radius:22px 0 0 22px}
+.velour-hero > .elementor-widget-image :is(div,img) {height:100%;min-height:100%;object-position:44% center}
+.velour-site .velour-copy.e-con {order:1;flex:1;width:auto;min-width:0;justify-content:center;align-items:flex-start;padding:clamp(32px,5vw,80px);gap:clamp(15px,2vw,28px);background:radial-gradient(circle at 100% 0,#6a394a77,transparent 50%)}
+.velour-site .velour-copy p.elementor-heading-title {display:inline-block;padding:6px 14px;border:1px solid #d9abb588;border-radius:99px;color:#f5ccd1;letter-spacing:.09em}
+.velour-site .velour-copy :is(h1,.eael-dch-title,.eael-dch-title-text) {font-size:clamp(2.5rem,4.5vw,5.1rem);line-height:1.25}
+.velour-site .velour-copy .elementor-widget-text-editor {max-width:38ch;color:#ead7de}
+.elementor .velour-site .velour-copy .elementor-widget-button .elementor-button {min-height:48px;padding:12px 24px;border-radius:99px;background:#f4d5d5;color:#3b2430;font-weight:700;box-shadow:0 12px 30px #0d050a55}
+.velour-site .velour-categories.e-con {margin-block:26px 12px;padding:18px 0 30px;gap:14px;border-bottom-color:#624451}
+.velour-site .velour-category.e-con {min-height:88px;padding:10px;border:1px solid #4c3947;border-radius:16px;background:#251b25;justify-content:flex-start;gap:14px;transition:background .2s,border-color .2s,transform .2s}
+.velour-site .velour-category.e-con:hover {background:#352331;border-color:#ba899a;transform:translateY(-2px)}
+.velour-category img {width:64px;height:64px;border-radius:12px;object-fit:cover}
+.velour-site .velour-category .elementor-button {color:#f7e5e7;font-size:.84rem}
+.velour-site .velour-section-title.e-con {padding-block:35px 18px}
+.velour-site .velour-card.e-con {border-color:#4d3a48;border-radius:18px;background:#261d26;box-shadow:0 15px 38px #0905092b;transition:transform .2s,border-color .2s,box-shadow .2s}
+.velour-site .velour-card.e-con:hover {transform:translateY(-5px);border-color:#bb8d9d;box-shadow:0 22px 48px #08040866}
+.velour-card img {aspect-ratio:4/5;object-fit:cover}
+.velour-card > :not(.elementor-widget-image) {padding-inline:20px}
+.velour-site .velour-card h3.elementor-heading-title {font-size:1.23rem;min-height:2.7em}
+.velour-site .velour-buy {gap:12px;flex-direction:column;align-items:stretch}
+.velour-site .velour-buy > span {display:flex;align-items:center;justify-content:flex-start;gap:7px;flex-wrap:wrap;direction:rtl;min-height:30px}
+.velour-site .velour-buy del {opacity:.6;font-size:.76rem}
+.velour-site .velour-buy ins {text-decoration:none;color:#ffd9dc}
+.velour-site .velour-buy .elementor-button {border:1px solid #d5aeb9;border-radius:99px;background:transparent;color:#f9e6e9;padding:9px 17px;justify-content:center}
+.velour-site .velour-buy .elementor-button:hover {background:#f1d7dd;color:#261922}
+.velour-site .velour-services {margin-block:45px 20px;padding:20px;border:1px solid #493947;border-radius:16px;background:#211923}
+@media(max-width:900px){.velour-site .velour-hero.e-con{min-height:440px}.velour-site .velour-copy.e-con{padding:32px}.velour-site .velour-category.e-con{flex-direction:column;text-align:center;gap:5px}.velour-site .velour-category .elementor-button{font-size:.72rem}}
+@media(max-width:700px){.velour-site .velour-hero.e-con{flex-direction:column;min-height:0}.velour-site .velour-hero > .elementor-widget-image{order:1;flex-basis:auto;height:300px;border-radius:20px 20px 0 0}.velour-site .velour-copy.e-con{order:2;padding:27px;min-height:300px}.velour-site .velour-copy :is(h1,.eael-dch-title,.eael-dch-title-text){font-size:clamp(2.1rem,8vw,3.3rem)}.velour-site .velour-categories.e-con{grid-template-columns:repeat(2,minmax(0,1fr))}.velour-site .velour-grid.e-con{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:470px){.velour-site .velour-grid.e-con{grid-template-columns:1fr}.velour-site .velour-categories.e-con{grid-template-columns:repeat(2,minmax(0,1fr))}.velour-card img{aspect-ratio:1.15}}
+@media(prefers-reduced-motion:reduce){.velour-site .velour-category.e-con,.velour-site .velour-card.e-con{transition:none}.velour-site .velour-category.e-con:hover,.velour-site .velour-card.e-con:hover{transform:none}}

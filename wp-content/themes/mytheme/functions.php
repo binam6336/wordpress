@@ -9,6 +9,8 @@ add_action( 'wp_enqueue_scripts', function () {
 
 require_once __DIR__ . '/inc/setup.php';
 require_once __DIR__ . '/inc/mini-cart.php';
+require_once __DIR__ . '/inc/prices.php';
+require_once __DIR__ . '/inc/appearance.php';
 require_once __DIR__ . '/inc/demo-runtime.php';
 add_action( 'after_setup_theme', function () {
 	add_theme_support( 'woocommerce' );

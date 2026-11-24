@@ -1,5 +1,5 @@
 .mytheme-setup.wrap {
-	max-width: 800px;
+	max-width: 1120px;
 	margin-block: 28px;
 	color: #203a37;
 }
@@ -35,7 +35,8 @@
 .mytheme-setup .button-primary:hover { background: #104d40; border-color: #104d40; }
 .mytheme-setup progress { vertical-align: middle; accent-color: #176554; max-width: 100%; margin-inline: 8px; }
 .mytheme-setup section p { line-height: 1.9; }
-.mytheme-demo {max-width: 620px;padding:16px;border:1px solid #cbded6;border-radius:14px;margin-block:16px}
+.mytheme-demo-gallery {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-block:20px}
+.mytheme-demo {min-width:0;padding:16px;border:1px solid #cbded6;border-radius:14px;background:#fbfdfb}
 .mytheme-demo:has(:checked) {border-color:#176554;box-shadow:0 0 0 2px #176554}
 .mytheme-demo label {display:grid;grid-template-columns:auto 1fr 1fr;gap:10px;align-items:center;cursor:pointer;margin-bottom:16px}
 .mytheme-demo strong {grid-column:span 2;font-size:1.1rem}
@@ -65,3 +66,36 @@
 .mytheme-failure b {border:1px solid currentColor;border-radius:50%;width:20px;text-align:center}
 .mytheme-failure [role=alert] {flex:1 1 180px;overflow-wrap:anywhere}
 .mytheme-panel:has([data-install]) .button:focus-visible {outline:2px solid #ffcfbd;outline-offset:3px}
+.mytheme-tabs {display:flex;gap:7px;overflow-x:auto;margin-block:16px;padding:5px;background:#e5ece8;border-radius:12px}
+.mytheme-tabs a {flex:none;padding:9px 16px;border-radius:8px;color:#2a5145;text-decoration:none;font-weight:600}
+.mytheme-tabs a:hover {background:#d2e4d9}
+.mytheme-tabs a[aria-current=page] {background:#176554;color:white;box-shadow:0 3px 9px #0f4c3b25}
+.mytheme-dashboard-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-block:22px}
+.mytheme-dashboard-grid a {display:grid;gap:4px;padding:20px;border:1px solid #d2e2d9;border-radius:12px;background:#f9fcfa;color:#194b43;text-decoration:none}
+.mytheme-dashboard-grid a:hover {border-color:#176554;box-shadow:0 6px 18px #17655415}
+.mytheme-dashboard-grid span {color:#63786e}
+.mytheme-actions,.mytheme-demo-switch {display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.mytheme-setup [data-confirm-demo] {width:min(520px,calc(100vw - 28px));border:1px solid #cbded6;border-radius:14px;padding:24px;color:#23382f;box-shadow:0 20px 60px #142a284a}
+.mytheme-setup [data-confirm-demo]::backdrop {background:#12251eb3}
+.mytheme-setup [data-confirm-demo] h3 {margin-top:0;font-size:22px}
+.mytheme-setup [data-confirm-demo] .mytheme-actions {justify-content:flex-end;margin-top:20px}
+.mytheme-setup [data-demo-message] {min-height:26px;color:#195a44}
+.mytheme-health-list {list-style:none;margin:18px 0;padding:0;max-width:650px}
+.mytheme-health-list li {display:flex;justify-content:space-between;gap:14px;padding:10px 0;border-bottom:1px solid #e2ebe5}
+.mytheme-health-list span {color:#176554}
+.mytheme-appearance-grid {display:grid;grid-template-columns:minmax(280px,1fr) minmax(250px,.9fr);gap:24px;margin-top:20px}
+.mytheme-appearance-grid form p {margin:0 0 17px}
+.mytheme-appearance-grid form label {font-weight:600}
+.mytheme-appearance-grid input[type=color] {width:75px;height:44px;padding:3px;margin-top:6px;border-radius:7px}
+.mytheme-appearance-preview {--sample-accent:#354b41;align-self:start;overflow:hidden;border:1px solid #d2e2d9;border-radius:12px;background:#f7f9f6;color:#27392f;font-family:Tahoma,Arial,sans-serif}
+.mytheme-appearance-preview .sample-header,.mytheme-appearance-preview .sample-footer {display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:14px;background:#e8efe9}
+.mytheme-appearance-preview .sample-header strong {color:var(--sample-accent)}
+.mytheme-appearance-preview .sample-body {padding:32px 18px}
+.mytheme-appearance-preview .sample-body button {padding:9px 16px;border:0;border-radius:8px;background:var(--sample-accent);color:#fff}
+.mytheme-appearance-preview [hidden] {display:none}
+.mytheme-feedback {padding:10px 14px;border-radius:8px}
+.mytheme-feedback.is-success {background:#e6f5e9;color:#176554}
+.mytheme-feedback.is-error {background:#fff0f0;color:#a22d3a}
+.mytheme-setup input[type=search] {min-height:38px;max-width:100%;border-color:#cbded6;border-radius:7px}
+@media(max-width:780px){.mytheme-demo-gallery,.mytheme-appearance-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.mytheme-dashboard-grid{grid-template-columns:1fr}.mytheme-setup.wrap{margin-inline:0}.mytheme-panel{padding:15px}.mytheme-tabs a{padding:8px 12px}}

@@ -13,6 +13,7 @@
 	const channel = window.BroadcastChannel ? new BroadcastChannel(channelName) : null;
 	if (channel) channel.onmessage = () => sync();
 	let nonce, queue = Promise.resolve(), pending = 0;
+	let returnFocus = null;
 
 	function node(tag, value, className) {
 		const element = document.createElement(tag);
@@ -27,12 +28,15 @@
 	}
 	function price(data, key) {
 		const amount = Number(data[key]) / 10 ** data.currency_minor_unit;
-		const number = amount.toLocaleString('fa-IR', {maximumFractionDigits: data.currency_minor_unit});
+		const number = amount.toLocaleString('fa-IR', {minimumFractionDigits: data.currency_minor_unit, maximumFractionDigits: data.currency_minor_unit});
+		if (['IRR', 'IRT'].includes(data.currency_code)) return number + '\u00a0' + decode(data.currency_symbol);
 		return decode(data.currency_prefix + number + data.currency_suffix);
 	}
 	function render(cart) {
 		document.querySelectorAll('.mt-cart-trigger').forEach(trigger => {
-			trigger.querySelector('.mt-count').textContent = fa.format(cart.items_count);
+			const badge = trigger.querySelector('.mt-count');
+			badge.textContent = fa.format(cart.items_count);
+			badge.hidden = false;
 			trigger.setAttribute('aria-label', 'سبد خرید، ' + fa.format(cart.items_count) + ' کالا');
 		});
 		const focusedKey = document.activeElement.closest('[data-key]')?.dataset.key;
@@ -121,7 +125,7 @@
 	}
 	document.addEventListener('click', event => {
 		const trigger = event.target.closest('.mt-cart-trigger');
-		if (trigger) { event.preventDefault(); dialog.showModal(); sync(); return; }
+		if (trigger) { event.preventDefault(); returnFocus = trigger; dialog.showModal(); sync(); return; }
 		const add = event.target.closest('[data-mytheme-add]');
 		if (add && !event.ctrlKey && !event.metaKey) {
 			event.preventDefault();
@@ -135,14 +139,19 @@
 		const fields = new FormData(form);
 		const variation = [];
 		for (const [name, value] of fields) {
-			if (name.startsWith('attribute_')) variation.push({attribute:name.slice(10),value});
+			if (name.startsWith('attribute_')) variation.push({attribute:name,value});
 			else if (!['add-to-cart','product_id','variation_id','quantity'].includes(name)) return;
 		}
 		const id = Number(fields.get('variation_id') || fields.get('product_id') || event.submitter?.value);
 		if (!id || form.matches('.variations_form') && !Number(fields.get('variation_id'))) return;
 		event.preventDefault();
+		returnFocus = event.submitter || form.querySelector('.single_add_to_cart_button');
 		dialog.showModal();
 		sync('add-item', {id, quantity:Number(fields.get('quantity') || 1), variation});
+	});
+	dialog.addEventListener('close', () => {
+		if (returnFocus?.isConnected) returnFocus.focus();
+		returnFocus = null;
 	});
 	dialog.addEventListener('click', event => {
 		const bounds = dialog.getBoundingClientRect();
@@ -159,4 +168,5 @@
 	document.body.addEventListener('wc-blocks_added_to_cart', () => sync());
 	document.body.addEventListener('wc-blocks_removed_from_cart', () => sync());
 	window.addEventListener('pageshow', () => sync());
+	document.addEventListener('visibilitychange', () => { if (!document.hidden) sync(); });
 })();

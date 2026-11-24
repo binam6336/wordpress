@@ -1,4 +1,39 @@
 const setup = document.querySelector('.mytheme-setup');
+const currencySearch = setup.querySelector('#mytheme-currency-search');
+if (currencySearch) {
+	const options = [...setup.querySelector('#mytheme-currency').options];
+	currencySearch.addEventListener('input', () => {
+		const query = currencySearch.value.trim().toLocaleLowerCase('fa-IR');
+		for (const option of options) option.hidden = !!query && !option.textContent.toLocaleLowerCase('fa-IR').includes(query);
+	});
+}
+const appearanceForm = setup.querySelector('[data-appearance-form]');
+if (appearanceForm) {
+	const preview = setup.querySelector('[data-appearance-preview]');
+	const status = appearanceForm.querySelector('[data-appearance-status]');
+	const save = appearanceForm.querySelector('[data-save-appearance]');
+	const initial = new FormData(appearanceForm);
+	function changed() {
+		const current = new FormData(appearanceForm);
+		return ['accent','font','header','footer'].some(key => current.get(key) !== initial.get(key));
+	}
+	function updatePreview() {
+		const data = new FormData(appearanceForm);
+		const fonts = {tahoma:'Tahoma,Arial,sans-serif', arial:'Arial,Tahoma,sans-serif', system:'system-ui,Tahoma,sans-serif'};
+		preview.style.setProperty('--sample-accent', data.get('accent'));
+		preview.style.fontFamily = fonts[data.get('font')];
+		preview.querySelector('.sample-header').hidden = data.get('header') === 'compact';
+		preview.querySelector('.sample-footer').hidden = data.get('footer') === 'simple';
+		save.disabled = !changed();
+		status.textContent = changed() ? 'تغییرات ذخیره نشده‌اند.' : 'تغییری ثبت نشده است.';
+	}
+	appearanceForm.addEventListener('input', updatePreview);
+	appearanceForm.addEventListener('change', updatePreview);
+	save.addEventListener('click', () => { appearanceForm.elements.mode.value = 'save'; });
+	appearanceForm.querySelector('[data-reset-appearance]').addEventListener('click', () => { appearanceForm.elements.mode.value = 'reset'; });
+	appearanceForm.addEventListener('submit', () => { status.textContent = 'در حال ذخیره…'; });
+	updatePreview();
+}
 const install = setup.querySelector('[data-install]');
 if (install) {
 	const rows = [...setup.querySelectorAll('[data-file]')];
@@ -125,46 +160,114 @@ if (install) {
 	controls();
 }
 
-document.querySelectorAll('[data-demo]').forEach(button => {
-	const panel = button.closest('section');
-	const bar = panel.querySelector('progress');
-	const status = panel.querySelector('output');
-	setup.addEventListener('change', () => {
-		button.disabled = !panel.querySelector('input').checked || panel.dataset.active === 'true';
-	});
-	button.onclick = async () => {
-		button.disabled = true;
-		panel.setAttribute('aria-busy', 'true');
-		try {
-			while (bar.value < 100) {
-				const body = new URLSearchParams({action: 'mytheme_import', demo: button.dataset.demo, _ajax_nonce: mythemeSetup.nonce});
-				const response = await fetch(ajaxurl, {method: 'POST', body});
-				const result = await response.json();
-				if (!result.success) throw new Error(result.data || 'خطا در نصب دمو');
-				bar.value = result.data;
-				status.textContent = bar.value + '%';
-			}
-			status.textContent = 'در حال فعال‌سازی…';
-			const body = new URLSearchParams({action: 'mytheme_activate_demo', demo: button.dataset.demo, _ajax_nonce: mythemeSetup.nonce});
-			const response = await fetch(ajaxurl, {method: 'POST', body});
-			const result = await response.json();
-			if (!result.success) throw new Error(result.data || 'فعال‌سازی دمو ناموفق بود');
-			setup.querySelectorAll('.mytheme-demo').forEach(other => {
-				other.dataset.active = String(other === panel);
-				other.querySelector('[data-visit]').hidden = other !== panel;
-				other.querySelector('strong em')?.remove();
-				other.querySelector('[data-demo]').textContent = other.querySelector('progress').value === 100 ? 'فعال‌سازی دمو' : 'نصب و تکمیل';
-			});
-			const badge = document.createElement('em');
-			badge.textContent = 'دموی فعال';
-			panel.querySelector('strong').append(badge);
-			panel.querySelector('[data-visit]').hidden = false;
-			status.textContent = '۱۰۰٪ — دمو آماده است';
-		} catch (error) {
-			status.textContent = error.message;
-		} finally {
-			panel.removeAttribute('aria-busy');
-			setup.dispatchEvent(new Event('change'));
+const demoPanels = [...setup.querySelectorAll('.mytheme-demo')];
+if (demoPanels.length) {
+	const dialog = setup.querySelector('[data-confirm-demo]');
+	const message = setup.querySelector('[data-demo-message]');
+	let selected = null;
+	let action = 'mytheme_activate_demo';
+	let running = false;
+
+	async function request(action, demo) {
+		const body = new URLSearchParams({action, demo, _ajax_nonce: mythemeSetup.nonce});
+		const response = await fetch(ajaxurl, {method:'POST', body});
+		let result;
+		try { result = await response.json(); }
+		catch { throw new Error('پاسخ معتبری از سرور دریافت نشد. دوباره تلاش کنید.'); }
+		if (!result.success) throw new Error(result.data?.message || 'عملیات انجام نشد. دوباره تلاش کنید.');
+		return result.data;
+	}
+	function controls() {
+		for (const panel of demoPanels) {
+			const button = panel.querySelector('[data-demo]');
+			button.disabled = running || !panel.querySelector('input').checked || panel.dataset.active === 'true';
 		}
+	}
+	function setActive(panel) {
+		for (const other of demoPanels) {
+			other.dataset.active = String(other === panel);
+			other.querySelector('strong em')?.remove();
+			other.querySelector('[data-visit]').hidden = other !== panel;
+		}
+		const badge = document.createElement('em');
+		badge.textContent = 'دموی فعال';
+		panel.querySelector('strong').append(badge);
+		controls();
+	}
+	function review(panel, operation) {
+		selected = panel;
+		action = operation;
+		const previous = demoPanels.find(item => item.dataset.active === 'true');
+		const name = panel.dataset.title;
+		dialog.querySelector('[data-confirm-description]').textContent = previous ? 'ظاهر سایت از «' + previous.dataset.title + '» به «' + name + '» تغییر می‌کند.' : 'دموی «' + name + '» روی سایت فعال می‌شود.';
+		dialog.querySelector('[data-accept-demo]').textContent = operation === 'mytheme_rollback_demo' ? 'تأیید بازگشت' : 'تأیید فعال‌سازی';
+		dialog.showModal();
+	}
+	setup.addEventListener('change', controls);
+	dialog.querySelector('[data-cancel-demo]').onclick = () => dialog.close();
+	dialog.querySelector('[data-accept-demo]').onclick = async () => {
+		if (running || !selected) return;
+		const panel = selected;
+		const button = dialog.querySelector('[data-accept-demo]');
+		running = true;
+		button.disabled = true;
+		message.textContent = 'در حال تغییر دمو…';
+		controls();
+		try {
+			const previous = demoPanels.find(item => item.dataset.active === 'true');
+			await request(action, panel.querySelector('[data-demo]').dataset.demo);
+			setActive(panel);
+			panel.querySelector('output').textContent = 'دمو فعال است';
+			message.textContent = 'دمو فعال شد.';
+			if (previous && previous !== panel) {
+				let rollback = setup.querySelector('[data-rollback]');
+				if (!rollback) {
+					const wrapper = document.createElement('p');
+					rollback = document.createElement('button');
+					rollback.type = 'button';
+					rollback.className = 'button';
+					rollback.textContent = 'بازگشت به دموی قبلی';
+					wrapper.append(rollback);
+					message.before(wrapper);
+				}
+				rollback.dataset.rollback = previous.querySelector('[data-demo]').dataset.demo;
+			}
+			dialog.close();
+		} catch (error) { message.textContent = error.message; }
+		finally { running = false; button.disabled = false; controls(); }
 	};
-});
+	for (const panel of demoPanels) {
+		const button = panel.querySelector('[data-demo]');
+		const bar = panel.querySelector('progress');
+		const status = panel.querySelector('output');
+		button.onclick = async () => {
+			if (running) return;
+			if (bar.value === 100) { review(panel, 'mytheme_activate_demo'); return; }
+			running = true;
+			panel.setAttribute('aria-busy', 'true');
+			message.textContent = '';
+			controls();
+			try {
+				while (bar.value < 100) {
+					const result = await request('mytheme_import', button.dataset.demo);
+					bar.value = result.progress;
+					status.textContent = bar.value + '%';
+					for (const [page, url] of Object.entries(result.previews || {})) {
+						const link = panel.querySelector('[data-preview-live="' + page + '"]');
+						if (link && url) { link.href = url; link.hidden = false; }
+					}
+				}
+				button.textContent = 'بررسی فعال‌سازی';
+				status.textContent = 'نصب کامل شد. پیش‌نمایش زنده آماده است.';
+			} catch (error) { status.textContent = error.message; }
+			finally { running = false; panel.removeAttribute('aria-busy'); controls(); }
+		};
+	}
+	setup.addEventListener('click', event => {
+		const rollback = event.target.closest('[data-rollback]');
+		if (!rollback) return;
+		const panel = demoPanels.find(item => item.querySelector('[data-demo]').dataset.demo === rollback.dataset.rollback);
+		if (panel) review(panel, 'mytheme_rollback_demo');
+	});
+	controls();
+}
