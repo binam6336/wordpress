@@ -8,6 +8,8 @@ add_action( 'wp_enqueue_scripts', function () {
 }, 90 );
 
 require_once __DIR__ . '/inc/setup.php';
+require_once __DIR__ . '/inc/site-identity.php';
+require_once __DIR__ . '/inc/expanded-demos.php';
 require_once __DIR__ . '/inc/design-options.php';
 require_once __DIR__ . '/inc/mini-cart.php';
 require_once __DIR__ . '/inc/prices.php';
@@ -24,7 +26,9 @@ add_action( 'after_setup_theme', function () {
 add_action( 'elementor/widgets/register', function ( $manager ) {
 	require_once __DIR__ . '/inc/store-widget.php';
 	require_once __DIR__ . '/inc/dynamic-products.php';
+	require_once __DIR__ . '/inc/news-widget.php';
 	$manager->register( new Mytheme_Store_Widget() );
 	$manager->register( new Mytheme_Product_Image_Widget() );
 	$manager->register( new Mytheme_Product_Grid_Widget() );
+	$manager->register( new Mytheme_News_Feed_Widget() );
 } );

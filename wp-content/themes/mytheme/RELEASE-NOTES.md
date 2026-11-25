@@ -1,3 +1,19 @@
+# mytheme 0.8.0
+
+## Changes in 0.8.0
+
+- Added four Elementor demos: an editorial news site, bags and shoes, contemporary clothing, and a supermarket. Velour remains the cosmetics demo; Home Decor has a deliberate upgrade path to a new luxury watch presentation. Six demos are offered in total.
+- New demo pages use independent palettes and layouts, with local sample photographs. Store products and news posts are marked as theme samples. Switching demos moves only the previous demo's marked samples to Trash and restores them on return.
+- The existing Home Decor installation can be upgraded from its demo card. Its Elementor page data is backed up first; legacy sample products are moved to Trash after the new import finishes. Merchant content is not rewritten.
+- Added theme settings for a WordPress media-library logo and site icon, with image-size guidance, and a reorderable header menu with page, category and custom-link destinations.
+- Refreshed the demo selection screenshots. See `demos/expanded/IMAGE-SOURCES.md` for sample photograph sources.
+
+## Verification for 0.8.0
+
+Imported the four new demos and upgraded the existing watch demo in an isolated WordPress staging site. Checked homepage rendering and sample counts, news-post Trash behavior after switching, logo and site icon save/render, custom menu save/reorder/render, and responsive screenshots. Checked all six demo home/shop/contact/cart/checkout/detail routes at 390 and 1440 pixels, and all homepages at 820 pixels: HTTP 200, no horizontal overflow, broken images or browser exceptions. Retried an interrupted watch-demo upgrade from its saved progress and completed it; its Elementor backup and new product set were verified. No real order or payment was created.
+
+---
+
 # mytheme 0.7.0
 
 ## Changes in 0.7.0

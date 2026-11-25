@@ -1,0 +1,62 @@
+{
+  "title": "روزبازار | سوپرمارکت",
+  "brand": "روزبازار",
+  "notice": "تازه، نزدیک و آمادهٔ رسیدن به خانهٔ شما",
+  "hero_title": "سبد امروز، حال خوب فردا",
+  "hero_copy": "از میوه و سبزی تا نان تازه؛ خرید روزانه را سریع و خوشایند انجام دهید.",
+  "kicker": "تازه‌های امروز",
+  "categories": {
+    "produce": "میوه و سبزی",
+    "pantry": "خواربار"
+  },
+  "items": [
+    {
+      "key": "item-1",
+      "name": "سبزی تازه",
+      "category": "produce",
+      "price": 120000,
+      "image": "market-1.jpg",
+      "source": "https://images.unsplash.com/photo-1610832958506-aa56368176cf"
+    },
+    {
+      "key": "item-2",
+      "name": "میوهٔ فصل",
+      "category": "produce",
+      "price": 85000,
+      "image": "market-2.jpg",
+      "source": "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce"
+    },
+    {
+      "key": "item-3",
+      "name": "شیر کامل",
+      "category": "pantry",
+      "price": 42000,
+      "image": "market-3.jpg",
+      "source": "https://images.unsplash.com/photo-1550583724-b2692b85b150"
+    },
+    {
+      "key": "item-4",
+      "name": "نان تازه",
+      "category": "pantry",
+      "price": 38000,
+      "image": "market-4.jpg",
+      "source": "https://images.unsplash.com/photo-1509440159596-0249088772ff"
+    },
+    {
+      "key": "item-5",
+      "name": "تخم‌مرغ محلی",
+      "category": "pantry",
+      "price": 185000,
+      "image": "market-5.jpg",
+      "source": "https://images.unsplash.com/photo-1518977676601-b53f82aba655"
+    },
+    {
+      "key": "item-6",
+      "name": "سبد میوه و سبزی",
+      "category": "produce",
+      "price": 260000,
+      "image": "market-6.jpg",
+      "source": "https://images.unsplash.com/photo-1542838132-92c53300491e"
+    }
+  ]
+}

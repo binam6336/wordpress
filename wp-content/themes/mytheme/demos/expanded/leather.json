@@ -1,0 +1,62 @@
+{
+  "title": "وِرسا | کیف و کفش",
+  "brand": "وِرسا",
+  "notice": "کیف و کفش برای مسیرهای هر روز",
+  "hero_title": "هر قدم، یک امضا",
+  "hero_copy": "فرم‌های ماندگار، رنگ‌های سنجیده و جزئیاتی که با زمان زیباتر می‌شوند.",
+  "kicker": "چرم و حرکت",
+  "categories": {
+    "bags": "کیف‌ها",
+    "shoes": "کفش‌ها"
+  },
+  "items": [
+    {
+      "key": "item-1",
+      "name": "کیف دوشی مشکی",
+      "category": "bags",
+      "price": 2450000,
+      "image": "leather-1.jpg",
+      "source": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa"
+    },
+    {
+      "key": "item-2",
+      "name": "کتانی خاکستری",
+      "category": "shoes",
+      "price": 1850000,
+      "image": "leather-2.jpg",
+      "source": "https://images.unsplash.com/photo-1491553895911-0055eca6402d"
+    },
+    {
+      "key": "item-3",
+      "name": "کیف دستی نارنجی",
+      "category": "bags",
+      "price": 3120000,
+      "image": "leather-3.jpg",
+      "source": "https://images.unsplash.com/photo-1584917865442-de89df76afd3"
+    },
+    {
+      "key": "item-4",
+      "name": "کتانی قرمز",
+      "category": "shoes",
+      "price": 2190000,
+      "image": "leather-4.jpg",
+      "source": "https://images.unsplash.com/photo-1542291026-7eec264c27ff"
+    },
+    {
+      "key": "item-5",
+      "name": "کفش پاشنه‌دار آبی",
+      "category": "shoes",
+      "price": 2780000,
+      "image": "leather-5.jpg",
+      "source": "https://images.unsplash.com/photo-1543163521-1bf539c55dd2"
+    },
+    {
+      "key": "item-6",
+      "name": "کیف مینیمال مشکی",
+      "category": "bags",
+      "price": 2650000,
+      "image": "leather-6.jpg",
+      "source": "https://images.unsplash.com/photo-1548036328-c9fa89d128fa"
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 <?php
 function mytheme_demos() {
 	$base = dirname( __DIR__ ) . '/demos/';
+	$legacy_watch = (int) get_option( 'home_decor_page_home' ) > 0 && get_option( 'home_decor_image_wall' ) && ! get_option( 'mytheme_home_decor_luxury_version' );
 	return apply_filters( 'mytheme_demos', array(
 		'velour' => array(
 			'title'    => 'فروشگاه زیبایی وِلور',
@@ -14,14 +15,38 @@ function mytheme_demos() {
 			'file'     => $base . 'velour/import.php',
 		),
 		'home-decor' => array(
-			'title' => 'خانه زمان، فروشگاه ساعت و دکوراسیون',
-			'description' => 'فروشگاه روشن و مینیمال برای ساعت و دکوراسیون خانه',
-			'previews' => array( 'demos/home-decor/previews/home.jpg', 'demos/home-decor/previews/products.jpg', 'demos/home-decor/previews/mobile.jpg' ),
-			'style' => 'demos/home-decor/style.css',
-			'brand' => 'خانه زمان',
-			'notice' => 'انتخابی ماندگار برای خانه شما · مجموعه ساعت و دکوراسیون',
-			'nav' => array( 'decor-wall' => 'ساعت دیواری', 'decor-table' => 'میز و کنسول', 'decor-gramophone' => 'گرامافون' ),
-			'file' => $base . 'home-decor/import.php',
+			'title' => $legacy_watch ? 'خانه زمان (نسخهٔ قبلی)' : 'اُربیت، فروشگاه ساعت‌های لاکچری',
+			'description' => $legacy_watch ? 'برای دریافت نسخهٔ جدید ساعت‌های لاکچری، ارتقای دمو را اجرا کنید.' : 'ساعت‌های کلاسیک و مدرن با هویتی تیره و ظریف',
+			'previews' => $legacy_watch ? array( 'demos/home-decor/previews/legacy-home.jpg', 'demos/home-decor/previews/legacy-products.jpg', 'demos/home-decor/previews/legacy-mobile.jpg' ) : array( 'demos/home-decor/previews/home.jpg', 'demos/home-decor/previews/products.jpg', 'demos/home-decor/previews/mobile.jpg' ),
+			'style' => $legacy_watch ? 'demos/home-decor/style.css' : 'demos/expanded/style.css',
+			'brand' => $legacy_watch ? 'خانه زمان' : 'ORBIT / اُربیت',
+			'notice' => $legacy_watch ? 'انتخابی ماندگار برای خانه شما · مجموعه ساعت و دکوراسیون' : 'زمان، با جزئیاتی که ماندگار می‌مانند',
+			'nav' => $legacy_watch ? array( 'decor-wall' => 'ساعت دیواری', 'decor-table' => 'میز و کنسول', 'decor-gramophone' => 'گرامافون' ) : array( 'home-decor-classic' => 'کلاسیک', 'home-decor-modern' => 'مدرن' ),
+			'file' => $base . 'expanded/import.php',
+		),
+		'news' => array(
+			'title' => 'خط نو، سایت خبری', 'description' => 'مجلهٔ خبری با چیدمان تحریریه و محتوای پویا',
+			'previews' => array( 'demos/expanded/previews/news-home.jpg', 'demos/expanded/previews/news-stories.jpg', 'demos/expanded/previews/news-mobile.jpg' ),
+			'style' => 'demos/expanded/style.css', 'brand' => 'خط نو', 'notice' => 'نگاهی دقیق‌تر به آنچه امروز اهمیت دارد',
+			'nav' => array( 'news-world' => 'جهان', 'news-culture' => 'فرهنگ', 'news-technology' => 'فناوری' ), 'file' => $base . 'expanded/import.php',
+		),
+		'leather' => array(
+			'title' => 'وِرسا، کیف و کفش', 'description' => 'فروشگاهی گرم و خوش‌ساخت برای کیف و کفش',
+			'previews' => array( 'demos/expanded/previews/leather-home.jpg', 'demos/expanded/previews/leather-products.jpg', 'demos/expanded/previews/leather-mobile.jpg' ),
+			'style' => 'demos/expanded/style.css', 'brand' => 'وِرسا', 'notice' => 'کیف و کفش برای مسیرهای هر روز',
+			'nav' => array( 'leather-bags' => 'کیف‌ها', 'leather-shoes' => 'کفش‌ها' ), 'file' => $base . 'expanded/import.php',
+		),
+		'fashion' => array(
+			'title' => 'فُرم، فروشگاه لباس', 'description' => 'پوشاک معاصر با صفحهٔ نخست تحریری و جسور',
+			'previews' => array( 'demos/expanded/previews/fashion-home.jpg', 'demos/expanded/previews/fashion-products.jpg', 'demos/expanded/previews/fashion-mobile.jpg' ),
+			'style' => 'demos/expanded/style.css', 'brand' => 'فُرم', 'notice' => 'فصل تازه، روایت تازه از پوشیدن',
+			'nav' => array( 'fashion-women' => 'زنانه', 'fashion-men' => 'مردانه' ), 'file' => $base . 'expanded/import.php',
+		),
+		'market' => array(
+			'title' => 'روزبازار، سوپرمارکت', 'description' => 'خرید روزانه با دسته‌بندی روشن و دسترسی سریع',
+			'previews' => array( 'demos/expanded/previews/market-home.jpg', 'demos/expanded/previews/market-products.jpg', 'demos/expanded/previews/market-mobile.jpg' ),
+			'style' => 'demos/expanded/style.css', 'brand' => 'روزبازار', 'notice' => 'تازه، نزدیک و آمادهٔ رسیدن به خانهٔ شما',
+			'nav' => array( 'market-produce' => 'میوه و سبزی', 'market-pantry' => 'خواربار' ), 'file' => $base . 'expanded/import.php',
 		),
 	) );
 }
@@ -61,6 +86,11 @@ add_action( 'admin_enqueue_scripts', function ( $hook ) {
 	wp_enqueue_style( 'mytheme-setup', $uri . 'setup.css', array(), $version );
 	wp_enqueue_style( 'mytheme-fonts', get_template_directory_uri() . '/assets/fonts/fonts.css', array(), $version );
 	wp_enqueue_script( 'mytheme-setup', $uri . 'setup.js', array( 'updates' ), $version, true );
+	if ( 'toplevel_page_mytheme-settings' === $hook ) {
+		wp_enqueue_media();
+		wp_enqueue_style( 'mytheme-identity', $uri . 'site-identity.css', array( 'mytheme-setup' ), $version );
+		wp_enqueue_script( 'mytheme-identity', $uri . 'site-identity.js', array( 'media-views' ), $version, true );
+	}
 	$font_families = array();
 	foreach ( mytheme_font_options() as $slug => $label ) { $font_families[ $slug ] = mytheme_font_family( $slug ); }
 	wp_localize_script( 'mytheme-setup', 'mythemeSetup', array( 'nonce' => wp_create_nonce( 'mytheme_import' ), 'installerNonce' => wp_create_nonce( 'mytheme_installer' ), 'healthNonce' => wp_create_nonce( 'mytheme_health_scan' ), 'healthParts' => mytheme_health_parts(), 'user' => get_current_user_id(), 'fonts' => $font_families ) );
@@ -138,9 +168,11 @@ function mytheme_setup_screen() {
 		<a class="button" target="_blank" rel="noopener" href="<?php echo esc_url( get_template_directory_uri() . '/' . $demo['previews'][0] ); ?>">پیش‌نمایش دمو</a>
 		<?php foreach ( array( 'home' => 'خانه', 'shop' => 'فروشگاه', 'product' => 'محصول' ) as $page => $label ) :
 			$url = 100 === $state ? mytheme_demo_preview_url( $id, $page ) : '';
+			if ( 'news' === $id ) { $label = 'shop' === $page ? 'خبرها' : ( 'product' === $page ? 'خبر' : $label ); }
 			?><a class="button" data-preview-live="<?php echo esc_attr( $page ); ?>" target="_blank" rel="noopener" href="<?php echo esc_url( $url ); ?>" <?php echo $url ? '' : 'hidden'; ?>>نمای زندهٔ <?php echo esc_html( $label ); ?></a><?php
 		endforeach; ?>
 		<button class="button button-primary" data-demo="<?php echo esc_attr( $id ); ?>" disabled><?php echo 100 === $state ? 'بررسی فعال‌سازی' : 'نصب دمو'; ?></button>
+		<?php if ( 'home-decor' === $id && get_option( 'home_decor_image_wall' ) && ! get_option( 'mytheme_home_decor_luxury_version' ) && 100 === $state ) : ?><button type="button" class="button" data-upgrade-watch>ارتقا به دموی ساعت لاکچری</button><?php endif; ?>
 		<progress aria-label="پیشرفت نصب" max="100" value="<?php echo $state; ?>"></progress> <output aria-live="polite"><?php echo $state; ?>%</output>
 		<a class="button button-primary" data-visit href="<?php echo esc_url( home_url( '/' ) ); ?>" <?php echo $active && 100 === $state ? '' : 'hidden'; ?>>ورود به سایت</a>
 		</section>
@@ -178,14 +210,16 @@ function mytheme_dashboard_screen() {
 function mytheme_settings_screen() {
 	if ( ! current_user_can( 'manage_options' ) ) { wp_die( 'دسترسی مجاز نیست.', '', array( 'response' => 403 ) ); }
 	$step = sanitize_key( wp_unslash( $_GET['step'] ?? 'appearance' ) );
-	if ( ! in_array( $step, array( 'appearance', 'woocommerce', 'health', 'logger' ), true ) ) { $step = 'appearance'; }
+	if ( ! in_array( $step, array( 'appearance', 'identity', 'menu', 'woocommerce', 'health', 'logger' ), true ) ) { $step = 'appearance'; }
 	?>
 	<div class="wrap mytheme-setup mytheme-settings" dir="rtl"><header><h1>تنظیمات قالب <bdi>mytheme</bdi></h1><p>ظاهر، فروشگاه و عیب‌یابی را از اینجا مدیریت کنید.</p></header>
 	<nav class="mytheme-tabs" aria-label="بخش‌های تنظیمات قالب">
-	<?php foreach ( array( 'appearance' => 'فونت و رنگ', 'woocommerce' => 'ووکامرس', 'health' => 'سلامت', 'logger' => 'لاگر' ) as $tab => $title ) : ?>
+	<?php foreach ( array( 'appearance' => 'فونت و رنگ', 'identity' => 'لوگو و آیکون', 'menu' => 'فهرست', 'woocommerce' => 'ووکامرس', 'health' => 'سلامت', 'logger' => 'لاگر' ) as $tab => $title ) : ?>
 	<a href="<?php echo esc_url( admin_url( 'admin.php?page=mytheme-settings&step=' . $tab ) ); ?>" <?php echo $step === $tab ? 'aria-current="page"' : ''; ?>><?php echo esc_html( $title ); ?></a>
 	<?php endforeach; ?><a href="<?php echo esc_url( admin_url( 'themes.php?page=mytheme-setup' ) ); ?>">راه‌اندازی اولیه</a></nav>
 	<?php if ( 'appearance' === $step ) { mytheme_appearance_screen(); }
+	elseif ( 'identity' === $step ) { mytheme_identity_screen(); }
+	elseif ( 'menu' === $step ) { mytheme_menu_screen(); }
 	elseif ( 'woocommerce' === $step ) { mytheme_woocommerce_screen(); }
 	elseif ( 'health' === $step ) { mytheme_health_screen(); }
 	else { mytheme_logger_screen(); } ?>
@@ -301,6 +335,24 @@ add_action( 'wp_ajax_mytheme_rollback_demo', function () {
 	try { mytheme_with_demo_lock( function () use ( $last ) { mytheme_activate_demo( $last['from'] ); } ); }
 	catch ( Throwable $error ) { mytheme_demo_ajax_failure( $error ); }
 	wp_send_json_success( array( 'active' => $last['from'] ) );
+} );
+
+add_action( 'wp_ajax_mytheme_prepare_watch_upgrade', function () {
+	mytheme_demo_ajax_access();
+	if ( 100 !== (int) get_option( 'mytheme_progress_home-decor' ) || get_option( 'mytheme_home_decor_luxury_version' ) ) { wp_send_json_error( array( 'message' => 'این دمو نیاز به ارتقا ندارد.' ), 400 ); }
+	try {
+		mytheme_with_demo_lock( static function () {
+			foreach ( array( 'home', 'shop', 'contact', 'cart', 'checkout' ) as $page ) {
+				$page_id = (int) get_option( 'home_decor_page_' . $page );
+				if ( ! $page_id || false === strpos( get_post_field( 'post_content', $page_id ), 'mytheme-demo:home-decor:' . $page ) ) { throw new RuntimeException( 'صفحهٔ دمو تغییر کرده است؛ ارتقای خودکار امن نیست.' ); }
+				add_post_meta( $page_id, '_mytheme_backup_before_luxury_v1', get_post_meta( $page_id, '_elementor_data', true ), true );
+			}
+			update_option( 'mytheme_step_home-decor', 0 );
+			update_option( 'mytheme_progress_home-decor', 0 );
+			update_option( 'mytheme_demo_status_home-decor', 'importing' );
+		} );
+	} catch ( Throwable $error ) { mytheme_demo_ajax_failure( $error ); }
+	wp_send_json_success( array( 'progress' => 0 ) );
 } );
 
 add_action( 'admin_notices', function () {

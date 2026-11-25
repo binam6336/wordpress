@@ -17,11 +17,16 @@ function mytheme_view_demo() {
 function mytheme_demo_preview_url( $id, $page ) {
 	$prefix = str_replace( '-', '_', $id );
 	if ( 'product' === $page ) {
-		$samples = mytheme_demo_sample_products( $id );
-		$url = $samples ? ( 'trash' === get_post_status( $samples[0] ) ? add_query_arg( 'mytheme_preview_product', $samples[0], home_url( '/' ) ) : get_permalink( $samples[0] ) ) : '';
+		if ( 'news' === $id ) {
+			$posts = mytheme_demo_sample_news_posts();
+			$url = $posts ? ( 'publish' === get_post_status( $posts[0] ) ? get_permalink( $posts[0] ) : get_preview_post_link( $posts[0] ) ) : '';
+		} else {
+			$samples = mytheme_demo_sample_products( $id );
+			$url = $samples ? ( 'trash' === get_post_status( $samples[0] ) ? add_query_arg( 'mytheme_preview_product', $samples[0], home_url( '/' ) ) : get_permalink( $samples[0] ) ) : '';
+		}
 	} elseif ( 'shop' === $page ) {
 		// WooCommerce redirects its shop page to the product archive and drops preview arguments.
-		$url = get_post_type_archive_link( 'product' );
+		$url = 'news' === $id ? get_permalink( (int) get_option( 'news_page_shop' ) ) : get_post_type_archive_link( 'product' );
 	} else {
 		$page_id = (int) get_option( $prefix . '_page_' . $page );
 		$url = $page_id ? get_permalink( $page_id ) : '';
@@ -87,6 +92,23 @@ function mytheme_activate_demo( $id ) {
 				}
 			}
 		}
+		if ( 'news' === $id ) {
+			foreach ( mytheme_demo_sample_news_posts() as $post_id ) {
+				if ( in_array( get_post_status( $post_id ), array( 'draft', 'trash' ), true ) ) {
+					$changes[ $post_id ] = get_post_status( $post_id );
+					$result = wp_update_post( array( 'ID' => $post_id, 'post_status' => 'publish' ), true );
+					if ( is_wp_error( $result ) ) { throw new RuntimeException( 'product_state' ); }
+				}
+			}
+		} elseif ( 'news' === $previous ) {
+			foreach ( mytheme_demo_sample_news_posts() as $post_id ) {
+				if ( 'publish' === get_post_status( $post_id ) ) {
+					$changes[ $post_id ] = 'publish';
+					$result = wp_update_post( array( 'ID' => $post_id, 'post_status' => 'trash' ), true );
+					if ( is_wp_error( $result ) ) { throw new RuntimeException( 'product_state' ); }
+				}
+			}
+		}
 	} catch ( Throwable $error ) {
 		foreach ( $changes as $product_id => $status ) { wp_update_post( array( 'ID' => $product_id, 'post_status' => $status ) ); }
 		throw $error;
@@ -115,11 +137,16 @@ function mytheme_activate_demo( $id ) {
 function mytheme_demo_sample_products( $id ) {
 	global $wpdb;
 	if ( ! isset( mytheme_demos()[ $id ] ) ) { return array(); }
-	$prefix = $wpdb->esc_like( 'mytheme-' . $id . '-' ) . '%';
+	$prefix = $wpdb->esc_like( 'mytheme-' . $id . ( 'home-decor' === $id && get_option( 'mytheme_home_decor_luxury_version' ) ? '-item-' : '-' ) ) . '%';
 	return array_map( 'intval', $wpdb->get_col( $wpdb->prepare(
 		"SELECT p.ID FROM {$wpdb->posts} p INNER JOIN {$wpdb->postmeta} marker ON marker.post_id = p.ID AND marker.meta_key = '_mytheme_demo' AND marker.meta_value = %s INNER JOIN {$wpdb->postmeta} sku ON sku.post_id = p.ID AND sku.meta_key = '_sku' AND sku.meta_value LIKE %s WHERE p.post_type = 'product' AND p.post_status IN ('publish','trash')",
 		$id, $prefix
 	) ) );
+}
+
+function mytheme_demo_sample_news_posts() {
+	global $wpdb;
+	return array_map( 'intval', $wpdb->get_col( "SELECT p.ID FROM {$wpdb->posts} p INNER JOIN {$wpdb->postmeta} m ON m.post_id=p.ID AND m.meta_key='_mytheme_demo' AND m.meta_value='news' WHERE p.post_type='post' AND p.post_name LIKE 'mytheme-news-%' AND p.post_status IN ('publish','trash','draft')" ) );
 }
 
 add_filter( 'body_class', function ( $classes ) {
@@ -191,7 +218,7 @@ function mytheme_inactive_demo_posts() {
 add_action( 'pre_get_posts', function ( $query ) {
 	if ( is_admin() || ! mytheme_view_demo() ) { return; }
 	$types = (array) $query->get( 'post_type' );
-	$catalog = array_intersect( $types, array( 'product', 'page', 'any' ) );
+	$catalog = array_intersect( $types, array( 'product', 'page', 'post', 'any' ) );
 	if ( ! $catalog && ! ( $query->is_main_query() && ( $query->is_search() || $query->is_page() || $query->is_singular( 'product' ) || $query->is_post_type_archive( 'product' ) || $query->is_tax( array( 'product_cat', 'product_tag' ) ) ) ) ) { return; }
 	$query->set( 'post__not_in', array_values( array_unique( array_merge( (array) $query->get( 'post__not_in' ), mytheme_inactive_demo_posts() ) ) ) );
 } );
@@ -230,35 +257,25 @@ function mytheme_demo_shell( $area ) {
 	$id = mytheme_view_demo();
 	if ( ! $id ) { return ''; }
 	$demo = mytheme_demos()[ $id ];
-	$prefix = str_replace( '-', '_', $id );
-	$links = array( 'home' => 'خانه', 'shop' => 'فروشگاه' );
-	foreach ( $demo['nav'] as $slug => $label ) {
-		$term = get_term_by( 'slug', $slug, 'product_cat' );
-		if ( $term ) {
-			$url = get_term_link( $term );
-			if ( ! is_wp_error( $url ) ) { $links[ $url ] = $label; }
-		}
-	}
-	$links['contact'] = 'تماس با ما';
-	$links['cart'] = 'سبد خرید';
-	$links['account'] = 'حساب کاربری';
 	$nav = '<nav class="mytheme-demo-nav" aria-label="راهبری فروشگاه">';
-	foreach ( $links as $page => $label ) {
-		if ( 0 === strpos( $page, 'http' ) ) { $url = $page; }
-		elseif ( 'account' === $page ) { $url = wc_get_page_permalink( 'myaccount' ); }
-		elseif ( 'shop' === $page ) { $url = get_post_type_archive_link( 'product' ); }
-		else { $page_id = (int) get_option( $prefix . '_page_' . $page ); $url = $page_id ? get_permalink( $page_id ) : ''; }
-		if ( $url ) { $nav .= '<a href="' . esc_url( mytheme_demo_front_url( $url, $id ) ) . '">' . esc_html( $label ) . '</a>'; }
+	foreach ( mytheme_menu_items( $id ) as $item ) {
+		$url = mytheme_menu_target_url( $item['target'] ?? '', $id );
+		if ( $url ) { $nav .= '<a href="' . esc_url( mytheme_demo_front_url( $url, $id ) ) . '">' . esc_html( $item['title'] ?? '' ) . '</a>'; }
 	}
 	$nav .= '</nav>';
-	$brand = '<a class="mytheme-demo-brand" href="' . esc_url( mytheme_demo_front_url( home_url( '/' ), $id ) ) . '">' . esc_html( $demo['brand'] ) . '</a>';
+	$logo = mytheme_identity_image_id( 'mytheme_logo_id' );
+	$brand_content = $logo ? wp_get_attachment_image( $logo, 'medium', false, array( 'class' => 'mytheme-logo', 'alt' => $demo['brand'] ) ) : esc_html( $demo['brand'] );
+	$brand = '<a class="mytheme-demo-brand" href="' . esc_url( mytheme_demo_front_url( home_url( '/' ), $id ) ) . '">' . $brand_content . '</a>';
 	if ( 'footer' === $area ) { return '<footer class="mytheme-demo-footer" dir="rtl"><div class="mytheme-demo-inner">' . $brand . $nav . '</div></footer>'; }
-	$search = '<form class="mytheme-demo-search" role="search" method="get" action="' . esc_url( home_url( '/' ) ) . '"><input type="search" name="s" value="' . esc_attr( get_search_query( false ) ) . '" aria-label="جست‌وجوی محصولات" placeholder="جست‌وجو در فروشگاه"><input type="hidden" name="post_type" value="product">';
+	$is_news = 'news' === $id;
+	$search = '<form class="mytheme-demo-search" role="search" method="get" action="' . esc_url( home_url( '/' ) ) . '"><input type="search" name="s" value="' . esc_attr( get_search_query( false ) ) . '" aria-label="' . ( $is_news ? 'جست‌وجوی خبرها' : 'جست‌وجوی محصولات' ) . '" placeholder="' . ( $is_news ? 'جست‌وجو در خبرها' : 'جست‌وجو در فروشگاه' ) . '">';
+	if ( ! $is_news ) { $search .= '<input type="hidden" name="post_type" value="product">'; }
 	if ( isset( $_GET['mytheme_preview'] ) && mytheme_preview_allowed( $id ) ) {
 		$search .= '<input type="hidden" name="mytheme_preview" value="' . esc_attr( $id ) . '"><input type="hidden" name="mytheme_preview_nonce" value="' . esc_attr( wp_create_nonce( 'mytheme_preview_' . $id ) ) . '">';
 	}
 	$search .= '<button type="submit">جست‌وجو</button></form>';
-	return '<div class="mytheme-demo-promo">' . esc_html( $demo['notice'] ) . '</div><header class="mytheme-demo-header" dir="rtl"><div class="mytheme-demo-inner">' . $brand . $search . mytheme_cart_trigger() . '</div>' . $nav . '</header>';
+	$utility = $is_news ? '<span class="mtx-news-date">' . esc_html( wp_date( 'j F Y' ) ) . '</span>' : mytheme_cart_trigger();
+	return '<div class="mytheme-demo-promo">' . esc_html( $demo['notice'] ) . '</div><header class="mytheme-demo-header" dir="rtl"><div class="mytheme-demo-inner">' . $brand . $search . $utility . '</div>' . $nav . '</header>';
 }
 add_filter( 'render_block_core/template-part', function ( $html, $block ) {
 	if ( is_admin() || ! mytheme_view_demo() ) { return $html; }

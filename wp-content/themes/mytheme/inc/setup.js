@@ -209,7 +209,7 @@ if (demoPanels.length) {
 	function controls() {
 		for (const panel of demoPanels) {
 			const button = panel.querySelector('[data-demo]');
-			button.disabled = running || !panel.querySelector('input').checked || panel.dataset.active === 'true';
+			button.disabled = running || !panel.querySelector('input').checked || (panel.dataset.active === 'true' && panel.querySelector('progress').value === 100);
 		}
 	}
 	function setActive(panel) {
@@ -289,6 +289,16 @@ if (demoPanels.length) {
 				button.textContent = 'بررسی فعال‌سازی';
 				status.textContent = 'نصب کامل شد. پیش‌نمایش زنده آماده است.';
 			} catch (error) { status.textContent = error.message; }
+			finally { running = false; panel.removeAttribute('aria-busy'); controls(); }
+		};
+		const upgrade = panel.querySelector('[data-upgrade-watch]');
+		if (upgrade) upgrade.onclick = async () => {
+			if (running || !window.confirm('دادهٔ المنتوری صفحه‌های قبلی پشتیبان‌گیری می‌شود و صفحه‌های دموی ساعت بازسازی می‌شوند. ادامه می‌دهید؟')) return;
+			running = true; upgrade.disabled = true; panel.setAttribute('aria-busy', 'true');
+			try {
+				await request('mytheme_prepare_watch_upgrade', 'home-decor');
+				bar.value = 0; panel.querySelector('input').checked = true; status.textContent = 'آمادهٔ نصب نسخهٔ ساعت لاکچری'; upgrade.remove(); button.textContent = 'نصب نسخهٔ جدید';
+			} catch (error) { status.textContent = error.message; upgrade.disabled = false; }
 			finally { running = false; panel.removeAttribute('aria-busy'); controls(); }
 		};
 	}

@@ -3,6 +3,8 @@ body[class*="mytheme-demo-"] {background:var(--mt-canvas);color:var(--mt-ink);fo
 body[class*="mytheme-demo-"] :is(.mytheme-demo-header,.mytheme-demo-footer) {background:var(--mt-surface);border-color:var(--mt-line);color:var(--mt-ink)}
 body[class*="mytheme-demo-"] .mytheme-demo-promo {background:var(--mytheme-accent);color:#fff}
 body[class*="mytheme-demo-"] :is(.mytheme-demo-brand,.mytheme-demo-nav a) {color:var(--mt-ink)}
+.mytheme-demo-brand .mytheme-logo{display:block;width:auto;max-width:210px;max-height:48px;object-fit:contain}
+@media(max-width:600px){.mytheme-demo-brand .mytheme-logo{max-width:150px;max-height:38px}}
 body[class*="mytheme-demo-"] .mytheme-demo-nav a:hover {color:var(--mytheme-accent)}
 body[class*="mytheme-demo-"] .mytheme-demo-search {background:var(--mt-raised);border-color:var(--mt-line)}
 body[class*="mytheme-demo-"] .mytheme-demo-search :is(input,button) {color:var(--mt-ink);font-family:var(--mytheme-font),Tahoma,sans-serif}

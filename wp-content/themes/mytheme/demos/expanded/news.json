@@ -1,0 +1,63 @@
+{
+  "title": "خط نو | سایت خبری",
+  "brand": "خط نو",
+  "notice": "نگاهی دقیق‌تر به آنچه امروز اهمیت دارد",
+  "hero_title": "خبر را عمیق‌تر بخوانیم",
+  "hero_copy": "روایت روشن، زمینهٔ کامل و انتخاب سردبیر؛ برای فهمیدن، نه فقط مرور کردن.",
+  "kicker": "روایت امروز",
+  "categories": {
+    "world": "جهان",
+    "culture": "فرهنگ",
+    "technology": "فناوری"
+  },
+  "items": [
+    {
+      "key": "item-1",
+      "name": "چرا شهرهای آینده به فضاهای عمومی نیاز دارند؟",
+      "category": "world",
+      "price": 0,
+      "image": "news-1.jpg",
+      "source": "https://images.unsplash.com/photo-1497366811353-6870744d04b2"
+    },
+    {
+      "key": "item-2",
+      "name": "فناوری در زندگی روزمره؛ فرصت‌ها و پرسش‌ها",
+      "category": "technology",
+      "price": 0,
+      "image": "news-2.jpg",
+      "source": "https://images.unsplash.com/photo-1485827404703-89b55fcc595e"
+    },
+    {
+      "key": "item-3",
+      "name": "بازگشت آرامش به طراحی شهر",
+      "category": "culture",
+      "price": 0,
+      "image": "news-3.jpg",
+      "source": "https://images.unsplash.com/photo-1500534623283-312aade485b7"
+    },
+    {
+      "key": "item-4",
+      "name": "همکاری‌های تازه در اقتصاد خلاق",
+      "category": "world",
+      "price": 0,
+      "image": "news-4.jpg",
+      "source": "https://images.unsplash.com/photo-1528605248644-14dd04022da1"
+    },
+    {
+      "key": "item-5",
+      "name": "آیندهٔ کار از نگاه نسل جدید",
+      "category": "technology",
+      "price": 0,
+      "image": "news-5.jpg",
+      "source": "https://images.unsplash.com/photo-1521737711867-e3b97375f902"
+    },
+    {
+      "key": "item-6",
+      "name": "روایت‌هایی از زندگی در شهر",
+      "category": "culture",
+      "price": 0,
+      "image": "news-6.jpg",
+      "source": "https://images.unsplash.com/photo-1497366811353-6870744d04b2"
+    }
+  ]
+}

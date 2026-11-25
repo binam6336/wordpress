@@ -1,8 +1,11 @@
 <?php
 function mytheme_appearance_defaults( $demo ) {
+	$defaults = array( 'velour' => array( 'rose-night', '#e4b4b3' ), 'home-decor' => array( 'obsidian', '#c9a873' ), 'news' => array( 'paper', '#245a75' ), 'leather' => array( 'chestnut', '#9b5b3d' ), 'fashion' => array( 'monochrome', '#171717' ), 'market' => array( 'fresh', '#24734b' ) );
+	if ( 'home-decor' === $demo && get_option( 'home_decor_image_wall' ) && ! get_option( 'mytheme_home_decor_luxury_version' ) ) { $defaults['home-decor'] = array( 'sage', '#354b41' ); }
+	$chosen = $defaults[ $demo ] ?? $defaults['velour'];
 	return array(
-		'accent' => 'velour' === $demo ? '#e4b4b3' : '#354b41',
-		'palette' => 'velour' === $demo ? 'rose-night' : 'sage',
+		'accent' => $chosen[1],
+		'palette' => $chosen[0],
 		'font' => 'vazirmatn',
 		'header' => 'full',
 		'footer' => 'full',

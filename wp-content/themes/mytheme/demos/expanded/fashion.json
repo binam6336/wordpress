@@ -1,0 +1,62 @@
+{
+  "title": "فُرم | فروشگاه لباس",
+  "brand": "فُرم",
+  "notice": "فصل تازه، روایت تازه از پوشیدن",
+  "hero_title": "سادگی، جسورتر از همیشه",
+  "hero_copy": "لباس‌هایی برای زندگی واقعی؛ برش‌های راحت، ترکیب‌های دقیق و انتخابی که به شما شبیه است.",
+  "kicker": "کالکشن فصل",
+  "categories": {
+    "women": "زنانه",
+    "men": "مردانه"
+  },
+  "items": [
+    {
+      "key": "item-1",
+      "name": "پالتو پشمی روشن",
+      "category": "women",
+      "price": 4800000,
+      "image": "fashion-1.jpg",
+      "source": "https://images.unsplash.com/photo-1551028719-00167b16eac5"
+    },
+    {
+      "key": "item-2",
+      "name": "مانتوی کتان",
+      "category": "women",
+      "price": 2100000,
+      "image": "fashion-2.jpg",
+      "source": "https://images.unsplash.com/photo-1434389677669-e08b4cac3105"
+    },
+    {
+      "key": "item-3",
+      "name": "کت کلاسیک",
+      "category": "men",
+      "price": 5200000,
+      "image": "fashion-3.jpg",
+      "source": "https://images.unsplash.com/photo-1507679799987-c73779587ccf"
+    },
+    {
+      "key": "item-4",
+      "name": "ست زمستانی",
+      "category": "women",
+      "price": 3200000,
+      "image": "fashion-4.jpg",
+      "source": "https://images.unsplash.com/photo-1445205170230-053b83016050"
+    },
+    {
+      "key": "item-5",
+      "name": "پیراهن روزمره",
+      "category": "men",
+      "price": 1450000,
+      "image": "fashion-5.jpg",
+      "source": "https://images.unsplash.com/photo-1539109136881-3be0616acf4b"
+    },
+    {
+      "key": "item-6",
+      "name": "لباس مینیمال",
+      "category": "women",
+      "price": 2870000,
+      "image": "fashion-6.jpg",
+      "source": "https://images.unsplash.com/photo-1496747611176-843222e1e57c"
+    }
+  ]
+}
