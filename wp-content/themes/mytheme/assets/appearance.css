@@ -1,0 +1,52 @@
+/* Applied after each demo stylesheet. Palette and font variables come from validated settings. */
+body[class*="mytheme-demo-"] {background:var(--mt-canvas);color:var(--mt-ink);font-family:var(--mytheme-font),Tahoma,sans-serif}
+body[class*="mytheme-demo-"] :is(.mytheme-demo-header,.mytheme-demo-footer) {background:var(--mt-surface);border-color:var(--mt-line);color:var(--mt-ink)}
+body[class*="mytheme-demo-"] .mytheme-demo-promo {background:var(--mytheme-accent);color:#fff}
+body[class*="mytheme-demo-"] :is(.mytheme-demo-brand,.mytheme-demo-nav a) {color:var(--mt-ink)}
+body[class*="mytheme-demo-"] .mytheme-demo-nav a:hover {color:var(--mytheme-accent)}
+body[class*="mytheme-demo-"] .mytheme-demo-search {background:var(--mt-raised);border-color:var(--mt-line)}
+body[class*="mytheme-demo-"] .mytheme-demo-search :is(input,button) {color:var(--mt-ink);font-family:var(--mytheme-font),Tahoma,sans-serif}
+body[class*="mytheme-demo-"] .mytheme-demo-search button {background:var(--mt-surface)}
+body[class*="mytheme-demo-"] :is(.velour-site,.decor-site) {color:var(--mt-ink);font-family:var(--mytheme-font),Tahoma,sans-serif}
+body[class*="mytheme-demo-"] :is(.velour-site,.decor-site) :is(.elementor-heading-title,.elementor-button,.elementor-widget-text-editor) {font-family:var(--mytheme-font),Tahoma,sans-serif}
+body.mytheme-demo-velour :is(.velour-card,.velour-category,.velour-services).e-con {background:var(--mt-surface);border-color:var(--mt-line)}
+body.mytheme-demo-velour .velour-hero.e-con {background:linear-gradient(145deg,color-mix(in srgb,var(--mytheme-accent) 28%,var(--mt-surface)),var(--mt-surface));border-color:var(--mt-line)}
+body.mytheme-demo-velour .velour-copy.e-con {background:radial-gradient(circle at 100% 0,color-mix(in srgb,var(--mytheme-accent) 25%,transparent),transparent 55%)}
+body.mytheme-demo-velour .velour-card h3.elementor-heading-title {color:var(--mt-ink)}
+body.mytheme-demo-velour .velour-category .elementor-button {color:var(--mt-ink)}
+body.mytheme-demo-velour .velour-buy .elementor-button {border-color:var(--mytheme-accent);color:var(--mt-ink)}
+body.mytheme-demo-velour .velour-buy .elementor-button:hover {background:var(--mytheme-accent);color:var(--mt-canvas)}
+body.mytheme-demo-home-decor .decor-stories.e-con {background:var(--mt-surface);border-color:var(--mt-line)}
+body.mytheme-demo-home-decor .decor-card.e-con,body.mytheme-demo-home-decor .decor-article.e-con {background:var(--mt-surface);border-color:var(--mt-line)}
+body.mytheme-demo-home-decor .decor-card h3.elementor-heading-title {color:var(--mt-ink)}
+body.mytheme-demo-home-decor .decor-category.e-con {background:var(--mytheme-accent)}
+body.mytheme-demo-home-decor .decor-about.e-con {background:color-mix(in srgb,var(--mytheme-accent) 11%,var(--mt-surface))}
+body.mytheme-demo-home-decor .decor-about .elementor-widget-text-editor {color:var(--mt-muted)}
+body.mytheme-demo-home-decor .decor-site .velour-buy .elementor-button {background:var(--mytheme-accent);color:#fff}
+body.mytheme-demo-home-decor .mytheme-catalog-filters {background:var(--mt-surface)}
+/* Elementor's editing frame otherwise applies its default green button treatment. */
+body.elementor-editor-active .elementor .velour-site .elementor-widget-button .elementor-button,
+body.elementor-edit-mode .elementor .velour-site .elementor-widget-button .elementor-button {background:var(--mt-raised);border:1px solid var(--mt-line);color:var(--mt-ink)}
+body.elementor-editor-active .elementor .velour-site .velour-copy .elementor-widget-button .elementor-button,
+body.elementor-edit-mode .elementor .velour-site .velour-copy .elementor-widget-button .elementor-button {background:var(--mytheme-accent);border-color:var(--mytheme-accent);color:var(--mt-canvas)}
+body.elementor-editor-active .elementor .decor-site .elementor-widget-button .elementor-button,
+body.elementor-edit-mode .elementor .decor-site .elementor-widget-button .elementor-button {background:var(--mt-raised);border:1px solid var(--mt-line);color:var(--mt-ink)}
+body.elementor-editor-active .elementor .decor-site .decor-category .elementor-widget-button .elementor-button,
+body.elementor-edit-mode .elementor .decor-site .decor-category .elementor-widget-button .elementor-button {background:var(--mytheme-accent);border-color:#fff8;color:#fff}
+.mytheme-product-media,.mytheme-product-media a {display:block;width:100%;height:100%;margin:0}
+.mytheme-product-media img {display:block;width:100%;height:100%;object-fit:cover}
+.mytheme-featured-products {width:100%;grid-column:1/-1}
+.mytheme-featured-products ul.products {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin:0;padding:0;list-style:none}
+.mytheme-featured-products li.product {display:flex;flex-direction:column;min-width:0;overflow:hidden;border:1px solid var(--mt-line);border-radius:18px;background:var(--mt-surface)}
+.mytheme-featured-products .mytheme-featured-link {display:block;color:var(--mt-ink);text-decoration:none}
+.mytheme-featured-products img {display:block;width:100%;aspect-ratio:4/5;object-fit:cover;background:var(--mt-raised)}
+.mytheme-featured-products h3 {min-height:3em;margin:14px 16px 6px;color:var(--mt-ink);font:700 1rem/1.5 var(--mytheme-font),Tahoma,sans-serif}
+.mytheme-featured-products .price {display:block;margin:0 16px 12px;color:var(--mytheme-accent);font-weight:700}
+.mytheme-featured-products .button {align-self:stretch;margin:auto 16px 16px;padding:10px 16px;border:1px solid var(--mytheme-accent);border-radius:99px;text-align:center;text-decoration:none;background:var(--mytheme-accent);color:var(--mt-canvas);font:700 .85rem var(--mytheme-font),Tahoma,sans-serif}
+.mytheme-featured-products .button:hover {filter:brightness(1.12)}
+body.mytheme-demo-home-decor .mytheme-featured-products ul.products {grid-template-columns:repeat(5,minmax(0,1fr))}
+body.mytheme-demo-home-decor .mytheme-featured-products img {aspect-ratio:1}
+body.mytheme-demo-home-decor .mytheme-featured-products .button {color:#fff}
+@media(max-width:1000px){body.mytheme-demo-home-decor .mytheme-featured-products ul.products{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:700px){.mytheme-featured-products ul.products,body.mytheme-demo-home-decor .mytheme-featured-products ul.products{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:470px){body.mytheme-demo-velour .mytheme-featured-products ul.products{grid-template-columns:1fr}}

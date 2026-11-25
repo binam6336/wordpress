@@ -20,6 +20,9 @@ function home_decor_link( $text, $url ) {
 }
 
 function home_decor_image( $key, $url = '' ) {
+	if ( in_array( $key, array( 'wall', 'table', 'gramophone' ), true ) ) {
+		return home_decor_widget( 'mytheme-product-image', array( 'category' => 'decor-' . $key, 'sort' => 'latest', 'link_url' => array( 'url' => $url ) ) );
+	}
 	$id = (int) get_option( 'home_decor_image_' . $key );
 	return home_decor_widget( 'image', array( 'image' => array( 'id' => $id, 'url' => wp_get_attachment_url( $id ) ), 'image_size' => 'full', 'link_to' => $url ? 'custom' : 'none', 'link' => array( 'url' => $url ) ) );
 }
@@ -69,7 +72,7 @@ function home_decor_layout( $key, $title, $catalog ) {
 		}
 		$content[] = home_decor_box( 'categories', $categories );
 		$content[] = home_decor_box( 'section-heading', array( home_decor_heading( 'انتخاب‌های محبوب' ), home_decor_link( 'تازه‌های فروشگاه ←', $links['shop'] ) ) );
-		$content[] = home_decor_box( 'grid', array_map( 'home_decor_product_card', array_slice( $catalog['products'], 0, 5 ) ) );
+		$content[] = home_decor_box( 'grid', array( home_decor_widget( 'mytheme-product-grid', array( 'sort' => 'latest', 'limit' => 5 ) ) ) );
 		$content[] = home_decor_box( 'section-heading', array( home_decor_heading( 'برای خانه‌ای دلنشین‌تر' ) ) );
 		$articles = array(
 			array( 'wall', 'چطور ساعت مناسب انتخاب کنیم؟', 'تناسب ابعاد ساعت با دیوار و مبلمان، نقطه شروع یک انتخاب خوب است.' ),

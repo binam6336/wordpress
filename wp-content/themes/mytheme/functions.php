@@ -8,9 +8,14 @@ add_action( 'wp_enqueue_scripts', function () {
 }, 90 );
 
 require_once __DIR__ . '/inc/setup.php';
+require_once __DIR__ . '/inc/design-options.php';
 require_once __DIR__ . '/inc/mini-cart.php';
 require_once __DIR__ . '/inc/prices.php';
 require_once __DIR__ . '/inc/appearance.php';
+require_once __DIR__ . '/inc/woocommerce-settings.php';
+require_once __DIR__ . '/inc/logger.php';
+require_once __DIR__ . '/inc/health.php';
+require_once __DIR__ . '/inc/demo-dynamic-migration.php';
 require_once __DIR__ . '/inc/demo-runtime.php';
 add_action( 'after_setup_theme', function () {
 	add_theme_support( 'woocommerce' );
@@ -18,5 +23,8 @@ add_action( 'after_setup_theme', function () {
 } );
 add_action( 'elementor/widgets/register', function ( $manager ) {
 	require_once __DIR__ . '/inc/store-widget.php';
+	require_once __DIR__ . '/inc/dynamic-products.php';
 	$manager->register( new Mytheme_Store_Widget() );
+	$manager->register( new Mytheme_Product_Image_Widget() );
+	$manager->register( new Mytheme_Product_Grid_Widget() );
 } );

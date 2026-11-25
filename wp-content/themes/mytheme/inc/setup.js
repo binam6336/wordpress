@@ -15,13 +15,16 @@ if (appearanceForm) {
 	const initial = new FormData(appearanceForm);
 	function changed() {
 		const current = new FormData(appearanceForm);
-		return ['accent','font','header','footer'].some(key => current.get(key) !== initial.get(key));
+		return ['accent','palette','font','header','footer'].some(key => current.get(key) !== initial.get(key));
 	}
 	function updatePreview() {
 		const data = new FormData(appearanceForm);
-		const fonts = {tahoma:'Tahoma,Arial,sans-serif', arial:'Arial,Tahoma,sans-serif', system:'system-ui,Tahoma,sans-serif'};
+		const palette = appearanceForm.querySelector('[name=palette]:checked');
 		preview.style.setProperty('--sample-accent', data.get('accent'));
-		preview.style.fontFamily = fonts[data.get('font')];
+		preview.style.setProperty('--sample-canvas', palette?.dataset.canvas || '#f7f9f6');
+		preview.style.setProperty('--sample-surface', palette?.dataset.surface || '#e8efe9');
+		preview.style.setProperty('--sample-ink', palette?.dataset.ink || '#27392f');
+		preview.style.fontFamily = mythemeSetup.fonts[data.get('font')] || 'Tahoma,sans-serif';
 		preview.querySelector('.sample-header').hidden = data.get('header') === 'compact';
 		preview.querySelector('.sample-footer').hidden = data.get('footer') === 'simple';
 		save.disabled = !changed();
@@ -29,10 +32,36 @@ if (appearanceForm) {
 	}
 	appearanceForm.addEventListener('input', updatePreview);
 	appearanceForm.addEventListener('change', updatePreview);
+	appearanceForm.querySelectorAll('[name=palette]').forEach(radio => radio.addEventListener('change', () => {
+		if (radio.checked) appearanceForm.elements.accent.value = radio.dataset.accent;
+		updatePreview();
+	}));
 	save.addEventListener('click', () => { appearanceForm.elements.mode.value = 'save'; });
 	appearanceForm.querySelector('[data-reset-appearance]').addEventListener('click', () => { appearanceForm.elements.mode.value = 'reset'; });
 	appearanceForm.addEventListener('submit', () => { status.textContent = 'در حال ذخیره…'; });
 	updatePreview();
+}
+const healthScan = setup.querySelector('[data-health-scan]');
+if (healthScan) {
+	const progress = setup.querySelector('[data-health-progress]');
+	const status = setup.querySelector('[data-health-status]');
+	healthScan.addEventListener('click', async () => {
+		healthScan.disabled = true;
+		progress.hidden = false;
+		progress.value = 0;
+		let failures = 0;
+		for (const part of mythemeSetup.healthParts) {
+			status.textContent = 'در حال بررسی ' + part + '…';
+			try {
+				const response = await fetch(ajaxurl,{method:'POST',credentials:'same-origin',body:new URLSearchParams({action:'mytheme_health_scan',part,_ajax_nonce:mythemeSetup.healthNonce})});
+				const result = await response.json();
+				if (!result.success) throw new Error(result.data?.message || 'بررسی ناموفق بود.');
+			} catch (error) { failures++; status.textContent = error.message + ' بررسی بخش‌های دیگر ادامه دارد.'; }
+			progress.value++;
+		}
+		status.textContent = failures ? 'بررسی پایان یافت؛ ' + failures + ' بخش کامل نشد. برای جزئیات صفحه را تازه‌سازی کنید.' : 'بررسی پایان یافت. برای دیدن نتیجه صفحه را تازه‌سازی کنید.';
+		healthScan.disabled = false;
+	});
 }
 const install = setup.querySelector('[data-install]');
 if (install) {

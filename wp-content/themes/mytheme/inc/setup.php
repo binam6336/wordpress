@@ -52,14 +52,18 @@ add_action( 'admin_init', function () {
 }, 100 );
 add_action( 'admin_menu', function () {
 	add_theme_page( 'مدیریت mytheme', 'mytheme', 'manage_options', 'mytheme-setup', 'mytheme_setup_screen' );
+	add_menu_page( 'تنظیمات قالب', 'تنظیمات قالب', 'manage_options', 'mytheme-settings', 'mytheme_settings_screen', 'dashicons-admin-appearance', 3 );
 } );
 add_action( 'admin_enqueue_scripts', function ( $hook ) {
-	if ( 'appearance_page_mytheme-setup' !== $hook ) { return; }
+	if ( ! in_array( $hook, array( 'appearance_page_mytheme-setup', 'toplevel_page_mytheme-settings' ), true ) ) { return; }
 	$uri = get_template_directory_uri() . '/inc/';
 	$version = wp_get_theme( get_template() )->get( 'Version' );
 	wp_enqueue_style( 'mytheme-setup', $uri . 'setup.css', array(), $version );
+	wp_enqueue_style( 'mytheme-fonts', get_template_directory_uri() . '/assets/fonts/fonts.css', array(), $version );
 	wp_enqueue_script( 'mytheme-setup', $uri . 'setup.js', array( 'updates' ), $version, true );
-	wp_localize_script( 'mytheme-setup', 'mythemeSetup', array( 'nonce' => wp_create_nonce( 'mytheme_import' ), 'installerNonce' => wp_create_nonce( 'mytheme_installer' ), 'user' => get_current_user_id() ) );
+	$font_families = array();
+	foreach ( mytheme_font_options() as $slug => $label ) { $font_families[ $slug ] = mytheme_font_family( $slug ); }
+	wp_localize_script( 'mytheme-setup', 'mythemeSetup', array( 'nonce' => wp_create_nonce( 'mytheme_import' ), 'installerNonce' => wp_create_nonce( 'mytheme_installer' ), 'healthNonce' => wp_create_nonce( 'mytheme_health_scan' ), 'healthParts' => mytheme_health_parts(), 'user' => get_current_user_id(), 'fonts' => $font_families ) );
 } );
 function mytheme_setup_screen() {
 	$ready = mytheme_ready();
@@ -70,9 +74,9 @@ function mytheme_setup_screen() {
 	?>
 	<div class="wrap mytheme-setup" dir="rtl"><header><h1>مدیریت قالب <bdi>mytheme</bdi></h1></header>
 	<nav class="mytheme-tabs" aria-label="مدیریت قالب">
-	<?php foreach ( array( 'home' => 'خانه', 'plugins' => 'راه‌اندازی', 'demos' => 'دموها', 'appearance' => 'ظاهر', 'health' => 'سلامت' ) as $tab => $label ) : ?>
+	<?php foreach ( array( 'home' => 'خانه', 'plugins' => 'افزونه‌ها', 'store' => 'فروشگاه', 'demos' => 'دموها' ) as $tab => $label ) : ?>
 		<a href="<?php echo esc_url( admin_url( 'themes.php?page=mytheme-setup&step=' . $tab ) ); ?>" <?php echo $step === $tab ? 'aria-current="page"' : ''; ?>><?php echo esc_html( $label ); ?></a>
-	<?php endforeach; ?></nav>
+	<?php endforeach; ?><a href="<?php echo esc_url( admin_url( 'admin.php?page=mytheme-settings' ) ); ?>">تنظیمات قالب</a></nav>
 	<?php if ( 'home' === $step ) : mytheme_dashboard_screen();
 	elseif ( 'appearance' === $step ) : mytheme_appearance_screen();
 	elseif ( 'health' === $step ) : mytheme_health_screen();
@@ -164,10 +168,27 @@ function mytheme_dashboard_screen() {
 	<div class="mytheme-dashboard-grid">
 		<a href="<?php echo esc_url( admin_url( 'themes.php?page=mytheme-setup&step=plugins' ) ); ?>"><strong>راه‌اندازی</strong><span>افزونه‌ها و تنظیمات فروشگاه</span></a>
 		<a href="<?php echo esc_url( admin_url( 'themes.php?page=mytheme-setup&step=demos' ) ); ?>"><strong>دموها</strong><span>پیش‌نمایش، نصب و تغییر دمو</span></a>
-		<a href="<?php echo esc_url( admin_url( 'themes.php?page=mytheme-setup&step=appearance' ) ); ?>"><strong>ظاهر</strong><span>رنگ، فونت، هدر و فوتر</span></a>
-		<a href="<?php echo esc_url( admin_url( 'themes.php?page=mytheme-setup&step=health' ) ); ?>"><strong>سلامت</strong><span>وضعیت صفحات و وابستگی‌ها</span></a>
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=mytheme-settings&step=appearance' ) ); ?>"><strong>ظاهر</strong><span>رنگ، فونت، هدر و فوتر</span></a>
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=mytheme-settings&step=health' ) ); ?>"><strong>سلامت</strong><span>وضعیت صفحات و وابستگی‌ها</span></a>
 	</div>
 	<p>تنظیمات ارسال و پرداخت در <a href="<?php echo esc_url( admin_url( 'admin.php?page=wc-settings' ) ); ?>">تنظیمات ووکامرس</a> مدیریت می‌شوند.</p>
+	</div>
+	<?php
+}
+function mytheme_settings_screen() {
+	if ( ! current_user_can( 'manage_options' ) ) { wp_die( 'دسترسی مجاز نیست.', '', array( 'response' => 403 ) ); }
+	$step = sanitize_key( wp_unslash( $_GET['step'] ?? 'appearance' ) );
+	if ( ! in_array( $step, array( 'appearance', 'woocommerce', 'health', 'logger' ), true ) ) { $step = 'appearance'; }
+	?>
+	<div class="wrap mytheme-setup mytheme-settings" dir="rtl"><header><h1>تنظیمات قالب <bdi>mytheme</bdi></h1><p>ظاهر، فروشگاه و عیب‌یابی را از اینجا مدیریت کنید.</p></header>
+	<nav class="mytheme-tabs" aria-label="بخش‌های تنظیمات قالب">
+	<?php foreach ( array( 'appearance' => 'فونت و رنگ', 'woocommerce' => 'ووکامرس', 'health' => 'سلامت', 'logger' => 'لاگر' ) as $tab => $title ) : ?>
+	<a href="<?php echo esc_url( admin_url( 'admin.php?page=mytheme-settings&step=' . $tab ) ); ?>" <?php echo $step === $tab ? 'aria-current="page"' : ''; ?>><?php echo esc_html( $title ); ?></a>
+	<?php endforeach; ?><a href="<?php echo esc_url( admin_url( 'themes.php?page=mytheme-setup' ) ); ?>">راه‌اندازی اولیه</a></nav>
+	<?php if ( 'appearance' === $step ) { mytheme_appearance_screen(); }
+	elseif ( 'woocommerce' === $step ) { mytheme_woocommerce_screen(); }
+	elseif ( 'health' === $step ) { mytheme_health_screen(); }
+	else { mytheme_logger_screen(); } ?>
 	</div>
 	<?php
 }
@@ -188,6 +209,7 @@ function mytheme_health_screen() {
 	</ul>
 	<p><a href="<?php echo esc_url( admin_url( 'admin.php?page=wc-settings' ) ); ?>">تنظیمات ووکامرس</a> · <a href="<?php echo esc_url( admin_url( 'site-health.php' ) ); ?>">سلامت وردپرس</a></p>
 	</div>
+	<?php mytheme_health_details(); ?>
 	<?php
 }
 add_action( 'admin_post_mytheme_store_settings', function () {

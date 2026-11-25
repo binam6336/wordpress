@@ -46,6 +46,10 @@ add_filter( 'option_page_on_front', function ( $value ) {
 } );
 foreach ( array( 'shop', 'cart', 'checkout' ) as $mytheme_wc_page ) {
 	add_filter( 'option_woocommerce_' . $mytheme_wc_page . '_page_id', function ( $value ) use ( $mytheme_wc_page ) {
+		if ( 'checkout' === $mytheme_wc_page && 'block' === mytheme_checkout_mode() ) {
+			$block_page = (int) get_option( 'mytheme_block_checkout_page' );
+			if ( $block_page && 'publish' === get_post_status( $block_page ) && has_block( 'woocommerce/checkout', get_post( $block_page ) ) ) { return $block_page; }
+		}
 		$id = mytheme_view_demo();
 		return $id ? (int) get_option( str_replace( '-', '_', $id ) . '_page_' . $mytheme_wc_page, $value ) : $value;
 	} );
@@ -135,12 +139,26 @@ add_action( 'wp_enqueue_scripts', function () {
 	if ( $id && isset( $demos[ $id ]['style'] ) ) {
 		wp_enqueue_style( 'mytheme-demo', get_template_directory_uri() . '/' . $demos[ $id ]['style'], array( 'mytheme' ), wp_get_theme()->get( 'Version' ) );
 		$appearance = mytheme_appearance( $id );
-		$fonts = array( 'tahoma' => 'Tahoma,Arial,sans-serif', 'arial' => 'Arial,Tahoma,sans-serif', 'system' => 'system-ui,Tahoma,sans-serif' );
-		$font = $fonts[ $appearance['font'] ] ?? $fonts['tahoma'];
+		$font = mytheme_font_family( $appearance['font'] );
+		$palette = mytheme_palette_for( $id, $appearance['palette'] );
+		wp_enqueue_style( 'mytheme-fonts', get_template_directory_uri() . '/assets/fonts/fonts.css', array(), wp_get_theme()->get( 'Version' ) );
+		wp_enqueue_style( 'mytheme-appearance', get_template_directory_uri() . '/assets/appearance.css', array( 'mytheme-demo', 'mytheme-fonts' ), wp_get_theme()->get( 'Version' ) );
 		$selector = 'body.mytheme-demo-' . sanitize_html_class( $id );
-		wp_add_inline_style( 'mytheme-demo', $selector . '{--mytheme-accent:' . $appearance['accent'] . ';--mt-rose:' . $appearance['accent'] . ';font-family:' . $font . '}' . $selector . ' :is(.velour-site,.decor-site){font-family:' . $font . '}' );
+		$variables = '';
+		foreach ( array( 'canvas', 'surface', 'raised', 'ink', 'muted', 'line' ) as $key ) { $variables .= '--mt-' . $key . ':' . $palette[ $key ] . ';'; }
+		$variables .= '--mytheme-accent:' . $appearance['accent'] . ';--mt-rose:' . $appearance['accent'] . ';--mytheme-font:' . $font . ';';
+		wp_add_inline_style( 'mytheme-appearance', $selector . '{' . $variables . '}' );
 	}
 }, 95 );
+
+// Elementor add-ons can enqueue its frontend bundle on Woo canvas pages even
+// though Elementor skips its own configuration for these shortcode pages.
+add_action( 'wp_enqueue_scripts', function () {
+	if ( ! mytheme_view_demo() || ! did_action( 'elementor/loaded' ) || ! is_page() ) { return; }
+	$page = get_queried_object_id();
+	if ( ! in_array( $page, array( wc_get_page_id( 'cart' ), wc_get_page_id( 'checkout' ) ), true ) ) { return; }
+	\Elementor\Plugin::$instance->frontend->enqueue_scripts();
+}, 100 );
 
 add_filter( 'template_include', function ( $template ) {
 	$id = mytheme_view_demo();

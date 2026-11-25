@@ -15,6 +15,10 @@ function velour_link( $text, $url ) {
 	return velour_widget( 'button', array( 'text' => $text, 'link' => array( 'url' => $url ) ) );
 }
 function velour_image( $key, $url = '' ) {
+	if ( 'hero' === $key || in_array( $key, array( 'makeup', 'skin', 'hair', 'scent', 'rose' ), true ) ) {
+		$category = 'hero' === $key ? 'rose' : $key;
+		return velour_widget( 'mytheme-product-image', array( 'category' => 'velour-' . $category, 'sort' => 'price_desc', 'link_url' => array( 'url' => $url ) ) );
+	}
 	$id = (int) get_option( 'velour_image_' . $key );
 	return velour_widget( 'image', array( 'image' => array( 'id' => $id, 'url' => wp_get_attachment_url( $id ) ), 'image_size' => 'full', 'link_to' => $url ? 'custom' : 'none', 'link' => array( 'url' => $url ) ) );
 }
@@ -48,7 +52,7 @@ function velour_layout( $key, $title, $catalog ) {
 			$bits[] = velour_widget( 'mytheme-store', array( 'view' => 'buy', 'product' => $id ) );
 			$cards[] = velour_box( 'card', $bits );
 		}
-		$content[] = velour_box( 'grid', $cards );
+		$content[] = velour_box( 'grid', array( velour_widget( 'mytheme-product-grid', array( 'sort' => 'latest', 'limit' => 6 ) ) ) );
 		$content[] = velour_box( 'services', array_map( function ( $text ) { return velour_heading( $text, 'p' ); }, array( 'تضمین اصالت کالا', 'ارسال سراسری', 'بسته‌بندی مناسب هدیه' ) ) );
 	} else {
 		$content[] = velour_heading( $title, 'h1' );

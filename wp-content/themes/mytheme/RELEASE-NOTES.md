@@ -1,3 +1,26 @@
+# mytheme 0.7.0
+
+## Changes in 0.7.0
+
+- Added a top-level theme settings screen with separate appearance, WooCommerce, health, and log sections. The guided setup remains available.
+- Bundled 20 locally served OFL Arabic and Persian font families with their licenses and five palettes for each demo.
+- Added Elementor product image and product grid widgets that read real WooCommerce products. Editors can choose newest, oldest, lowest or highest price, popularity, and featured products. Existing theme-owned demo homepages are backed up before their generated media widgets are migrated.
+- Added a checkout mode switch between the demo shortcode page and a separate official WooCommerce Checkout block page. Existing customized checkout content is preserved.
+- Added bounded diagnostic logs split by component and day, plus a read-only integrity screen for core and required plugin checksums and executable files in uploads. This is a triage aid, not a complete malware scanner or a definitive plugin conflict detector.
+- Corrected Elementor configuration on canvas cart and checkout pages, and refreshed both demos' selection previews.
+
+## Verification for 0.7.0
+
+In an isolated WordPress staging installation, imported both demos, checked their homepages and dynamic product imagery, tested product sorting, appearance save/reset, checkout mode switching, block rendering with a cart item, and core checksum scan (2,148 files with no mismatch). A WooCommerce checksum scan inspected 4,189 files with no mismatch when the staging-only TLS validation issue was bypassed for that diagnostic run; normal theme requests still require certificate validation. Checked the Home Decor home, shop, product, cart, checkout, and contact pages at 390, 820, and 1440 px: HTTP 200 and no horizontal overflow. PHP and JavaScript syntax checks passed. No real payment or order was created.
+
+## Limits in 0.7.0
+
+- The staging container's certificate chain prevented retrieving the official plugin checksum feed, so plugin checksum results could not be verified there. The UI reports this as an incomplete scan.
+- The diagnostic logger starts after theme loading and cannot capture errors before WordPress loads it. It can identify suspicious files or error sources, but cannot conclusively identify malware or prove a plugin conflict.
+- Production hosting, payment gateways, and checkout translations were not available to test.
+
+---
+
 # mytheme 0.6.0
 
 ## Changes

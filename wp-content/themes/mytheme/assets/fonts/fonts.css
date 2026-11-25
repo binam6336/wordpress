@@ -1,0 +1,29 @@
+/* Arabic/Persian subsets of OFL fonts. License files are beside each font. */
+@font-face{font-family:"MT Vazirmatn";src:url("vazirmatn-400-700.woff2") format("woff2");font-style:normal;font-weight:400 700;font-display:swap}
+@font-face{font-family:"MT Noto Sans Arabic";src:url("noto-sans-arabic-400-700.woff2") format("woff2");font-style:normal;font-weight:400 700;font-display:swap}
+@font-face{font-family:"MT Noto Naskh Arabic";src:url("noto-naskh-arabic-400-700.woff2") format("woff2");font-style:normal;font-weight:400 700;font-display:swap}
+@font-face{font-family:"MT Amiri";src:url("amiri-400.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"MT Amiri";src:url("amiri-700.woff2") format("woff2");font-style:normal;font-weight:700;font-display:swap}
+@font-face{font-family:"MT Cairo";src:url("cairo-400-700.woff2") format("woff2");font-style:normal;font-weight:400 700;font-display:swap}
+@font-face{font-family:"MT Tajawal";src:url("tajawal-400.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"MT Tajawal";src:url("tajawal-700.woff2") format("woff2");font-style:normal;font-weight:700;font-display:swap}
+@font-face{font-family:"MT Almarai";src:url("almarai-400.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"MT Almarai";src:url("almarai-700.woff2") format("woff2");font-style:normal;font-weight:700;font-display:swap}
+@font-face{font-family:"MT Changa";src:url("changa-400-700.woff2") format("woff2");font-style:normal;font-weight:400 700;font-display:swap}
+@font-face{font-family:"MT El Messiri";src:url("el-messiri-400-700.woff2") format("woff2");font-style:normal;font-weight:400 700;font-display:swap}
+@font-face{font-family:"MT Harmattan";src:url("harmattan-400.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"MT Harmattan";src:url("harmattan-700.woff2") format("woff2");font-style:normal;font-weight:700;font-display:swap}
+@font-face{font-family:"MT Lateef";src:url("lateef-400.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"MT Lateef";src:url("lateef-700.woff2") format("woff2");font-style:normal;font-weight:700;font-display:swap}
+@font-face{font-family:"MT Markazi Text";src:url("markazi-text-400-700.woff2") format("woff2");font-style:normal;font-weight:400 700;font-display:swap}
+@font-face{font-family:"MT Reem Kufi";src:url("reem-kufi-400-700.woff2") format("woff2");font-style:normal;font-weight:400 700;font-display:swap}
+@font-face{font-family:"MT Aref Ruqaa";src:url("aref-ruqaa-400.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"MT Aref Ruqaa";src:url("aref-ruqaa-700.woff2") format("woff2");font-style:normal;font-weight:700;font-display:swap}
+@font-face{font-family:"MT IBM Plex Sans Arabic";src:url("ibm-plex-sans-arabic-400.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"MT IBM Plex Sans Arabic";src:url("ibm-plex-sans-arabic-700.woff2") format("woff2");font-style:normal;font-weight:700;font-display:swap}
+@font-face{font-family:"MT Readex Pro";src:url("readex-pro-400-700.woff2") format("woff2");font-style:normal;font-weight:400 700;font-display:swap}
+@font-face{font-family:"MT Noto Kufi Arabic";src:url("noto-kufi-arabic-400-700.woff2") format("woff2");font-style:normal;font-weight:400 700;font-display:swap}
+@font-face{font-family:"MT Mada";src:url("mada-400-700.woff2") format("woff2");font-style:normal;font-weight:400 700;font-display:swap}
+@font-face{font-family:"MT Baloo Bhaijaan 2";src:url("baloo-bhaijaan-2-400-700.woff2") format("woff2");font-style:normal;font-weight:400 700;font-display:swap}
+@font-face{font-family:"MT Scheherazade New";src:url("scheherazade-new-400.woff2") format("woff2");font-style:normal;font-weight:400;font-display:swap}
+@font-face{font-family:"MT Scheherazade New";src:url("scheherazade-new-700.woff2") format("woff2");font-style:normal;font-weight:700;font-display:swap}
